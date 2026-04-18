@@ -1,0 +1,7 @@
+package constants
+
+const (
+	SERVICE_NAME = "SERVICE_NAME"
+	HTTP_PORT    = "HTTP_PORT"
+	ENVIRONMENT  = "ENVIRONMENT"
+)
