@@ -1,0 +1,16 @@
+name: buckly-ms
+services:
+  gateway:
+    container_name: gateway
+    build: 
+      context: .
+      dockerfile: gateway/Dockerfile
+    env_file:
+      - gateway/.env
+    ports:
+      - "8080:8080"
+    networks:
+      - network
+networks:
+  network:
+    driver: bridge
