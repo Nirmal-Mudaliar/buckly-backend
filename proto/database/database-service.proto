@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+option go_package = "proto/database-gen";
+
+import "google/protobuf/empty.proto";
+import "proto/database/dto/users.proto";
+
+package database;
+
+service DatabaseService {
+  rpc GetAllUsers(google.protobuf.Empty) returns (GetAllUsersResponse);
+}

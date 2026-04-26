@@ -38,8 +38,6 @@ func main() {
 			gin.SetMode(gin.ReleaseMode)
 		}
 
-		logger.Info("Starting gateway service", zap.Any("config: ", p.Config))
-
 		r := gin.Default()
 
 		for _, handler := range p.Handler {
@@ -49,12 +47,14 @@ func main() {
 		r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 		srv := &http.Server{
-			Addr:         ":" + "8080",
+			Addr:         ":" + p.Config.HTTPPort,
 			Handler:      r,
 			ReadTimeout:  10 * time.Second,
 			WriteTimeout: 10 * time.Second,
 			IdleTimeout:  120 * time.Second,
 		}
+
+		logger.Info("Starting gateway service", zap.Any("config: ", p.Config))
 
 		if err := srv.ListenAndServe(); err != nil {
 			log.Printf("Failed to run gateway: %v", err)

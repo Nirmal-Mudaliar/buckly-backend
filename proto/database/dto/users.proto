@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+option go_package = "proto/database-gen";
+
+import "google/protobuf/timestamp.proto";
+
+package database;
+
+message Users {
+  int64 id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string email = 4;
+  string phone_no = 5;
+  string date_of_birth = 6;
+  string gender = 7;
+  string bio = 8;
+  string profile_photo_url = 9;
+  int64 home_country_id = 10;
+  int64 home_state_id = 11;
+  int64 home_city_id = 12;
+  bool is_phone_verified = 13;
+  int64 trust_score = 14;
+  string status = 15;
+  google.protobuf.Timestamp insert_ts = 16;
+  google.protobuf.Timestamp modified_ts = 17;
+}
+
+message GetAllUsersResponse {
+  repeated Users users = 1;
+}
