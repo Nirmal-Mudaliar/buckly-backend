@@ -67,3 +67,4 @@ docs
 
 # Salesforce DX project files
 .sfdx
+.env
