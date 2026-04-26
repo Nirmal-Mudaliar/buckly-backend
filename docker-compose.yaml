@@ -45,6 +45,23 @@ services:
       - ./certs:/certs
     networks:
       - network
+  
+  auth-service:
+    container_name: auth-service
+    build:
+      context: .
+      dockerfile: services/auth-service/Dockerfile
+    env_file:
+      - services/auth-service/.env
+    ports:
+      - "50052:50052"
+    depends_on:
+      - database-service
+    volumes:
+      - ./certs:/certs
+    networks:
+      - network
+
 networks:
   network:
     driver: bridge

@@ -5,72 +5,73 @@ import (
 	"buckly-ms/gateway/config"
 	"buckly-ms/gateway/contracts"
 	"buckly-ms/gateway/models"
+	auth_gen "buckly-ms/proto/auth-gen"
 	database_gen "buckly-ms/proto/database-gen"
 	"context"
 	"net/http"
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 type AuthHandler struct {
 	Config                *config.GatewayConfig
 	DatabaseServiceClient database_gen.DatabaseServiceClient
+	AuthServiceClient     auth_gen.AuthServiceClient
 }
 
-func NewAuthHandler(config *config.GatewayConfig, databaseServiceClient database_gen.DatabaseServiceClient) contracts.RouteRegistrar {
+func NewAuthHandler(
+	config *config.GatewayConfig,
+	databaseServiceClient database_gen.DatabaseServiceClient,
+	authServiceClient auth_gen.AuthServiceClient,
+) contracts.RouteRegistrar {
 	return &AuthHandler{
 		Config:                config,
 		DatabaseServiceClient: databaseServiceClient,
+		AuthServiceClient:     authServiceClient,
 	}
 }
 
 func (h *AuthHandler) RegisterRoutes(r *gin.Engine) {
 	secured := r.Group("/api/v1/auth")
-	secured.GET("/signup", h.SignUp)
+	secured.POST("/signup", h.SignUp)
 }
 
 // Sign Up godoc
-// @Summary      Signs up the user
-// @Description  Returns status ok if the service is running
+// @Summary      Register a new user
+// @Description  Creates a new user account with email, password, and profile information
 // @Tags         auth
+// @Accept       json
 // @Produce      json
-// @Success      200  {object}  models.ApiResponse
-// @Router       /api/v1/auth/signup [get]
+// @Param        body  body  dto.SignUpRequest  true  "Sign up details"
+// @Success      200  {object}  models.ApiResponse{data=dto.SignUpResponse}
+// @Router       /api/v1/auth/signup [post]
 func (h *AuthHandler) SignUp(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 5*time.Second)
 	defer cancel()
 
-	usersResp, err := h.DatabaseServiceClient.GetAllUsers(ctx, &emptypb.Empty{})
+	var payload dto.SignUpRequest
+	if err := c.ShouldBindJSON(&payload); err != nil {
+		c.JSON(http.StatusBadRequest, models.ApiResponse{
+			Success: false,
+			Message: "Invalid Payload",
+		})
+	}
+
+	resp, err := h.AuthServiceClient.SignUp(ctx, &auth_gen.SignUpRequest{
+		Email:      payload.Email,
+		Password:   payload.Password,
+		PhoneNo:    payload.PhoneNo,
+		FirstName:  payload.FirstName,
+		LastName:   payload.LastName,
+		DateOfBith: payload.DateOfBirth,
+		Gender:     payload.Gender,
+	})
+
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, models.ApiResponse{
 			Success: false,
-			Message: "Failed to fetch users from database service",
-		})
-		return
-	}
-
-	users := make([]dto.Users, 0, len(usersResp.Users))
-	for _, u := range usersResp.Users {
-		users = append(users, dto.Users{
-			Id:              u.Id,
-			FirstName:       u.FirstName,
-			LastName:        u.LastName,
-			Email:           u.Email,
-			PhoneNo:         u.PhoneNo,
-			DateOfBirth:     u.DateOfBirth,
-			Gender:          u.Gender,
-			Bio:             u.Bio,
-			ProfilePhotoUrl: u.ProfilePhotoUrl,
-			HomeCountryId:   u.HomeCountryId,
-			HomeStateId:     u.HomeStateId,
-			HomeCityId:      u.HomeCityId,
-			IsPhoneVerified: u.IsPhoneVerified,
-			TrustScore:      u.TrustScore,
-			Status:          u.Status,
-			InsertTs:        u.InsertTs.AsTime().Format(time.RFC3339),
-			ModifiedTs:      u.ModifiedTs.AsTime().Format(time.RFC3339),
+			Message: "Error occured in Sign Up",
 		})
 	}
 
@@ -78,7 +79,7 @@ func (h *AuthHandler) SignUp(c *gin.Context) {
 		Success: true,
 		Message: "Signup successful",
 		Data: dto.SignUpResponse{
-			Users: users,
+			Message: resp.Message,
 		},
 	})
 }

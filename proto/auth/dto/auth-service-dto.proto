@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option go_package = "proto/auth-gen";
+
+package auth;
+
+message SignUpRequest {
+  string email = 1;
+  string password = 2;
+  string phone_no = 3;
+  string first_name = 4;
+  string last_name = 5;
+  string date_of_bith = 6;
+  string gender = 7;
+}
+
+message SignUpResponse {
+  string message = 1;
+}

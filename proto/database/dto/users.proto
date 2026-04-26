@@ -6,7 +6,7 @@ import "google/protobuf/timestamp.proto";
 
 package database;
 
-message Users {
+message User {
   int64 id = 1;
   string first_name = 2;
   string last_name = 3;
@@ -22,10 +22,25 @@ message Users {
   bool is_phone_verified = 13;
   int64 trust_score = 14;
   string status = 15;
-  google.protobuf.Timestamp insert_ts = 16;
-  google.protobuf.Timestamp modified_ts = 17;
+  string password_hash = 16;
+  google.protobuf.Timestamp insert_ts = 17;
+  google.protobuf.Timestamp modified_ts = 18;
 }
 
 message GetAllUsersResponse {
-  repeated Users users = 1;
+  repeated User users = 1;
+}
+
+message CreateUserRequest {
+  string first_name = 1;
+  string last_name = 2;
+  string email = 3;
+  string phone_no = 4;
+  string date_of_birth = 5;
+  string gender = 6;
+  string password_hash = 7;
+}
+
+message CreateUserResponse {
+  User user = 1;
 }

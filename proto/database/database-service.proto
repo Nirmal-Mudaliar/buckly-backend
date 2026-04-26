@@ -9,4 +9,5 @@ package database;
 
 service DatabaseService {
   rpc GetAllUsers(google.protobuf.Empty) returns (GetAllUsersResponse);
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
 }

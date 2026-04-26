@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+option go_package = "proto/auth-gen";
+
+package auth;
+
+import "proto/auth/dto/auth-service-dto.proto";
+
+service AuthService {
+  rpc SignUp(SignUpRequest) returns (SignUpResponse);
+}

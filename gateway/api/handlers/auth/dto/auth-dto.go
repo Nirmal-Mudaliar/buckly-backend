@@ -1,6 +1,6 @@
 package dto
 
-type Users struct {
+type User struct {
 	Id              int64  `json:"id"`
 	FirstName       string `json:"first_name"`
 	LastName        string `json:"last_name"`
@@ -20,6 +20,16 @@ type Users struct {
 	ModifiedTs      string `json:"modified_ts"`
 }
 
+type SignUpRequest struct {
+	Email       string `json:"email"`
+	Password    string `json:"password"`
+	PhoneNo     string `json:"phone_no"`
+	FirstName   string `json:"first_name"`
+	LastName    string `json:"last_name"`
+	Gender      string `json:"gender"`
+	DateOfBirth string `json:"date_of_birth"`
+}
+
 type SignUpResponse struct {
-	Users []Users `json:"users"`
+	Message string `json:"message"`
 }

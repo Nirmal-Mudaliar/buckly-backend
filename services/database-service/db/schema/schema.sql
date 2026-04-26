@@ -11,6 +11,7 @@ CREATE TABLE public.users (
   home_country_id bigInt,
   home_state_id bigInt,
   home_city_id bigInt,
+  password_hash text NOT NULL,
   is_phone_verified boolean DEFAULT false,
   trust_score integer DEFAULT 0,
   status text DEFAULT 'active',
