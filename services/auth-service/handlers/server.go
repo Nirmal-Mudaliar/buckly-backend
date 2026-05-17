@@ -10,4 +10,5 @@ type AuthServiceServer struct {
 	auth_gen.UnimplementedAuthServiceServer
 	DatabaseServiceClient database_gen.DatabaseServiceClient
 	TwilioClient          *twilio.TwilioClient
+	JWTSecret             string
 }

@@ -4,6 +4,7 @@ go 1.25.3
 
 require (
 	github.com/gin-gonic/gin v1.12.0
+	github.com/golang-jwt/jwt/v5 v5.2.2
 	github.com/jackc/pgx/v5 v5.9.2
 	github.com/swaggo/files v1.0.1
 	github.com/swaggo/gin-swagger v1.6.1
@@ -15,7 +16,6 @@ require (
 )
 
 require (
-	github.com/golang-jwt/jwt/v5 v5.2.2 // indirect
 	github.com/golang/mock v1.6.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 )

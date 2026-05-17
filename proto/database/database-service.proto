@@ -8,6 +8,11 @@ import "proto/database/dto/users.proto";
 package database;
 
 service DatabaseService {
-  rpc GetAllUsers(google.protobuf.Empty) returns (GetAllUsersResponse);
   rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+  rpc GetAllUsers(google.protobuf.Empty) returns (GetAllUsersResponse);
+  rpc GetUserByPhoneNo(GetUserByPhoneNoRequest) returns (GetUserByPhoneNoResponse);
+  rpc GetUserByEmail(GetUserByEmailRequest) returns (GetUserByEmailResponse);
+  rpc UpdatePhoneNoVerified(UpdatePhoneNoVerifiedRequest) returns (UpdatePhoneNoVerifiedResponse);
+  rpc StoreRefreshToken(StoreRefreshTokenRequest) returns (StoreRefreshTokenResponse);
+  rpc DeleteUnverifiedUserByUserId(DeleteUnverifiedUserByUserIdRequest) returns (DeleteUnverifiedUserByUserIdResponse);
 }

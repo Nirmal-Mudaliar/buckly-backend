@@ -30,3 +30,15 @@ func (t *TwilioClient) SendOTP(phoneNo string) error {
 	_, err := t.Client.VerifyV2.CreateVerification(t.ServiceSID, params)
 	return err
 }
+
+func (t *TwilioClient) VerifyOTP(phoneNo string, code string) (bool, error) {
+	params := &twilioApi.CreateVerificationCheckParams{}
+	params.SetTo(phoneNo)
+	params.SetCode(code)
+
+	resp, err := t.Client.VerifyV2.CreateVerificationCheck(t.ServiceSID, params)
+	if err != nil {
+		return false, err
+	}
+	return *resp.Status == "approved", nil
+}

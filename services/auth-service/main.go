@@ -45,6 +45,7 @@ func main() {
 			authConfig.TwilioAuthToken,
 			authConfig.TwilioVerifyServiceSID,
 		),
+		JWTSecret: authConfig.JWTSecret,
 	}
 
 	auth_gen.RegisterAuthServiceServer(grpcServer, authServiceServer)

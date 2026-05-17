@@ -35,6 +35,7 @@ func NewAuthHandler(
 func (h *AuthHandler) RegisterRoutes(r *gin.Engine) {
 	secured := r.Group("/api/v1/auth")
 	secured.POST("/signup", h.SignUp)
+	secured.POST("/verify-otp", h.VerifyOTP)
 }
 
 // Sign Up godoc
@@ -59,13 +60,13 @@ func (h *AuthHandler) SignUp(c *gin.Context) {
 	}
 
 	resp, err := h.AuthServiceClient.SignUp(ctx, &auth_gen.SignUpRequest{
-		Email:      payload.Email,
-		Password:   payload.Password,
-		PhoneNo:    payload.PhoneNo,
-		FirstName:  payload.FirstName,
-		LastName:   payload.LastName,
-		DateOfBith: payload.DateOfBirth,
-		Gender:     payload.Gender,
+		Email:       payload.Email,
+		Password:    payload.Password,
+		PhoneNo:     payload.PhoneNo,
+		FirstName:   payload.FirstName,
+		LastName:    payload.LastName,
+		DateOfBirth: payload.DateOfBirth,
+		Gender:      payload.Gender,
 	})
 
 	if err != nil {
@@ -80,6 +81,59 @@ func (h *AuthHandler) SignUp(c *gin.Context) {
 		Message: "Signup successful",
 		Data: dto.SignUpResponse{
 			Message: resp.Message,
+		},
+	})
+}
+
+// Verify OTP godoc
+// @Summary      Verify OTP
+// @Description  Verifies the OTP sent to the user's phone number during sign-up and returns access and refresh tokens upon successful verification
+// @Tags         auth
+// @Accept       json
+// @Produce      json
+// @Param        body  body  dto.VerifyOTPRequest  true  "Verify OTP details"
+// @Success      200  {object}  models.ApiResponse{data=dto.VerifyOTPResponse}
+// @Router       /api/v1/auth/verify-otp [post]
+func (h *AuthHandler) VerifyOTP(c *gin.Context) {
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 5*time.Second)
+	defer cancel()
+
+	var payload dto.VerifyOTPRequest
+	if err := c.ShouldBindJSON(&payload); err != nil {
+		c.JSON(http.StatusBadRequest, models.ApiResponse{
+			Success: false,
+			Message: "Invalid Payload",
+		})
+		return
+	}
+
+	if payload.PhoneNo == "" || payload.OTP == "" {
+		c.JSON(http.StatusBadRequest, models.ApiResponse{
+			Success: false,
+			Message: "Phone number and OTP are required",
+		})
+		return
+	}
+
+	resp, err := h.AuthServiceClient.VerifyOTP(ctx, &auth_gen.VerifyOTPRequest{
+		PhoneNo: payload.PhoneNo,
+		Otp:     payload.OTP,
+	})
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.ApiResponse{
+			Success: false,
+			Message: "Error occured in OTP verification",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, models.ApiResponse{
+		Success: true,
+		Message: "OTP verification successful",
+		Data: dto.VerifyOTPResponse{
+			AccessToken:  resp.AccessToken,
+			RefreshToken: resp.RefreshToken,
 		},
 	})
 }

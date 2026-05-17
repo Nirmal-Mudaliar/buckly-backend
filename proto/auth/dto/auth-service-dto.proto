@@ -10,10 +10,20 @@ message SignUpRequest {
   string phone_no = 3;
   string first_name = 4;
   string last_name = 5;
-  string date_of_bith = 6;
+  string date_of_birth = 6;
   string gender = 7;
 }
 
 message SignUpResponse {
   string message = 1;
+}
+
+message VerifyOTPRequest {
+  string phone_no = 1;
+  string otp = 2;
+}
+
+message VerifyOTPResponse {
+  string access_token = 1;
+  string refresh_token = 2;
 }

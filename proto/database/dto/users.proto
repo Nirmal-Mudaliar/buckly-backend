@@ -44,3 +44,48 @@ message CreateUserRequest {
 message CreateUserResponse {
   User user = 1;
 }
+
+message GetUserByPhoneNoRequest {
+  string phone_no = 1;
+}
+
+message GetUserByPhoneNoResponse {
+  User user = 1;
+}
+
+message UpdatePhoneNoVerifiedRequest {
+  string phone_no = 1;
+}
+
+message UpdatePhoneNoVerifiedResponse {
+  User user = 1;
+}
+
+message StoreRefreshTokenRequest {
+  int64 user_id = 1;
+  string token = 2;
+  google.protobuf.Timestamp expires_at = 3;
+}
+
+message StoreRefreshTokenResponse {
+  int64 id = 1;
+  int64 user_id = 2;
+  string token = 3;
+  google.protobuf.Timestamp expires_at = 4;
+}
+
+message GetUserByEmailRequest {
+  string email = 1;
+}
+
+message GetUserByEmailResponse {
+  User user = 1;
+}
+
+message DeleteUnverifiedUserByUserIdRequest {
+  int64 id = 1;
+}
+
+message DeleteUnverifiedUserByUserIdResponse {
+  int64 deleted_rows = 1;
+}

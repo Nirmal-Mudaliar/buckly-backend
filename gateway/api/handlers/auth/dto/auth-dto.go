@@ -33,3 +33,13 @@ type SignUpRequest struct {
 type SignUpResponse struct {
 	Message string `json:"message"`
 }
+
+type VerifyOTPRequest struct {
+	PhoneNo string `json:"phone_no"`
+	OTP     string `json:"otp"`
+}
+
+type VerifyOTPResponse struct {
+	AccessToken  string `json:"access_token"`
+	RefreshToken string `json:"refresh_token"`
+}

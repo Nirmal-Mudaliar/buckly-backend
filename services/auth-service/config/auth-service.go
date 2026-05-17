@@ -13,6 +13,7 @@ type AuthServiceConfig struct {
 	TwilioAccountSID       string
 	TwilioAuthToken        string
 	TwilioVerifyServiceSID string
+	JWTSecret              string
 }
 
 func LoadAuthServiceConfig() *AuthServiceConfig {
@@ -24,5 +25,6 @@ func LoadAuthServiceConfig() *AuthServiceConfig {
 		TwilioAccountSID:       core_utils.GetEnv(core_constants.TWILIO_ACCOUNT_SID),
 		TwilioAuthToken:        core_utils.GetEnv(core_constants.TWILIO_AUTH_TOKEN),
 		TwilioVerifyServiceSID: core_utils.GetEnv(core_constants.TWILIO_VERIFY_SERVICE_SID),
+		JWTSecret:              core_utils.GetEnv(core_constants.JWT_SECRET),
 	}
 }

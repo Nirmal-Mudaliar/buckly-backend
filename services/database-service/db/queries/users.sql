@@ -25,3 +25,27 @@ INSERT INTO users (
   sqlc.arg(insert_ts),
   sqlc.arg(modified_ts)
 ) RETURNING *;
+
+-- name: GetUserByPhoneNo :one
+SELECT * 
+FROM users 
+WHERE phone_no = sqlc.arg(phone_no)
+LIMIT 1;
+
+-- name: GetUserByEmail :one
+SELECT *
+FROM users
+WHERE email = sqlc.arg(email)
+LIMIT 1;
+
+-- name: UpdatePhoneNoVerified :one
+UPDATE users
+SET is_phone_verified = true,
+    modified_ts = sqlc.arg(modified_ts)
+WHERE phone_no = sqlc.arg(phone_no)
+RETURNING *;
+
+-- name: DeleteUnverifiedUserByUserId :execrows
+DELETE FROM users
+WHERE id = sqlc.arg(id)
+AND is_phone_verified = false;

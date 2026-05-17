@@ -93,6 +93,22 @@ func ConvertTimeToPgtypeTimestamptz(t time.Time) pgtype.Timestamptz {
 	}
 }
 
+// Protobuf Timestamp -> PgtypeTimestamptz
+func ConvertTimestampToPgtypeTimestamptz(ts *timestamppb.Timestamp) pgtype.Timestamptz {
+	if ts == nil {
+		return pgtype.Timestamptz{
+			Valid: false,
+		}
+	}
+
+	t := ts.AsTime()
+
+	return pgtype.Timestamptz{
+		Time:  t,
+		Valid: true,
+	}
+}
+
 // PgtypeTimestamptz -> Timestamp
 func ConvertPgtypeTimestamptzToTimestamp(value pgtype.Timestamptz) *timestamppb.Timestamp {
 	if !value.Valid || value.Time.IsZero() {
