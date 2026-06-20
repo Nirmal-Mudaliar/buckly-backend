@@ -4,6 +4,7 @@ import (
 	"buckly-ms/core/utils"
 	auth_gen "buckly-ms/proto/auth-gen"
 	database_gen "buckly-ms/proto/database-gen"
+	auth_utils "buckly-ms/services/auth-service/utils"
 	"context"
 	"time"
 
@@ -90,7 +91,7 @@ func (ass *AuthServiceServer) VerifyOTP(ctx context.Context, req *auth_gen.Verif
 		return nil, status.Errorf(codes.Internal, "Failed to get user by phone no")
 	}
 
-	_, err = ass.DatabaseServiceClient.UpdatePhoneNoVerified(ctx, &database_gen.UpdatePhoneNoVerifiedRequest{
+	updatePhoneNoVerifiedResp, err := ass.DatabaseServiceClient.UpdatePhoneNoVerified(ctx, &database_gen.UpdatePhoneNoVerifiedRequest{
 		PhoneNo: req.PhoneNo,
 	})
 
@@ -123,6 +124,7 @@ func (ass *AuthServiceServer) VerifyOTP(ctx context.Context, req *auth_gen.Verif
 	}
 
 	return &auth_gen.VerifyOTPResponse{
+		User:         auth_utils.DatabaseUserToAuthUser(updatePhoneNoVerifiedResp.User),
 		AccessToken:  accessToken,
 		RefreshToken: refreshToken,
 	}, nil

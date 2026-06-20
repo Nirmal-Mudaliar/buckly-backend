@@ -4,6 +4,8 @@ option go_package = "proto/auth-gen";
 
 package auth;
 
+import "google/protobuf/timestamp.proto";
+
 message SignUpRequest {
   string email = 1;
   string password = 2;
@@ -23,7 +25,39 @@ message VerifyOTPRequest {
   string otp = 2;
 }
 
+message User {
+  int64 id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string email = 4;
+  string phone_no = 5;
+  string date_of_birth = 6;
+  string gender = 7;
+  string bio = 8;
+  string profile_photo_url = 9;
+  int64 home_country_id = 10;
+  int64 home_state_id = 11;
+  int64 home_city_id = 12;
+  bool is_phone_verified = 13;
+  int64 trust_score = 14;
+  string status = 15;
+  google.protobuf.Timestamp insert_ts = 17;
+  google.protobuf.Timestamp modified_ts = 18;
+}
+
 message VerifyOTPResponse {
-  string access_token = 1;
-  string refresh_token = 2;
+  User user = 1;
+  string access_token = 2;
+  string refresh_token = 3;
+}
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  User user = 1;
+  string access_token = 2;
+  string refresh_token = 3;
 }
