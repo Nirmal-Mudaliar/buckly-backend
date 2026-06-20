@@ -129,3 +129,30 @@ func (ass *AuthServiceServer) VerifyOTP(ctx context.Context, req *auth_gen.Verif
 		RefreshToken: refreshToken,
 	}, nil
 }
+
+func (ass *AuthServiceServer) RenewAccessToken(ctx context.Context, req *auth_gen.RenewAccessTokenRequest) (*auth_gen.RenewAccessTokenResponse, error) {
+	logger := utils.GetLoggerFromContext(ctx)
+
+	claims, err := utils.ValidateToken(req.RefreshToken, ass.JWTSecret)
+	if err != nil {
+		logger.Error("Failed to validate refresh token", zap.Error(err))
+		return nil, status.Errorf(codes.Unauthenticated, "Invalid refresh token")
+	}
+
+	newAccessToken, err := utils.GenerateAccessToken(
+		claims.UserId,
+		claims.Email,
+		claims.PhoneNo,
+		claims.IsPhoneNoVerified,
+		ass.JWTSecret,
+	)
+
+	if err != nil {
+		logger.Error("Failed to generate access token", zap.Error(err))
+		return nil, status.Errorf(codes.Internal, "Failed to generate access token")
+	}
+
+	return &auth_gen.RenewAccessTokenResponse{
+		AccessToken: newAccessToken,
+	}, nil
+}

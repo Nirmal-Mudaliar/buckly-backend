@@ -36,6 +36,7 @@ func (h *AuthHandler) RegisterRoutes(r *gin.Engine) {
 	secured := r.Group("/api/v1/auth")
 	secured.POST("/signup", h.SignUp)
 	secured.POST("/verify-otp", h.VerifyOTP)
+	secured.POST("/renew-access-token", h.RenewAccessToken)
 }
 
 // Sign Up godoc
@@ -151,6 +152,55 @@ func (h *AuthHandler) VerifyOTP(c *gin.Context) {
 				InsertTs:        resp.User.InsertTs.AsTime().String(),
 				ModifiedTs:      resp.User.ModifiedTs.AsTime().String(),
 			},
+			AccessToken:  resp.AccessToken,
+			RefreshToken: resp.RefreshToken,
+		},
+	})
+}
+
+// Renew Access Token godoc
+// @Summary      Renew Access Token
+// @Description  Renews the access token using a valid refresh token
+// @Tags         auth
+// @Accept       json
+// @Produce      json
+// @Param        body  body  dto.RenewAccessTokenRequest  true  "Renew access token details"
+// @Success      200  {object}  models.ApiResponse{data=dto.RenewAccessTokenResponse}
+// @Failure      400  {object}  models.ApiResponse
+// @Failure      500  {object}  models.ApiResponse
+// @Router       /api/v1/auth/renew-access-token [post]
+func (h *AuthHandler) RenewAccessToken(c *gin.Context) {
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 5*time.Second)
+	defer cancel()
+
+	var payload dto.RenewAccessTokenRequest
+	if err := c.ShouldBindJSON(&payload); err != nil {
+		c.JSON(http.StatusBadRequest, models.ApiResponse{
+			Success: false,
+			Message: "Invalid Payload",
+		})
+		return
+	}
+
+	resp, err := h.AuthServiceClient.RenewAccessToken(
+		ctx,
+		&auth_gen.RenewAccessTokenRequest{
+			RefreshToken: payload.RefreshToken,
+		},
+	)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.ApiResponse{
+			Success: false,
+			Message: "Error occured in renewing access token",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, models.ApiResponse{
+		Success: true,
+		Message: "Access token renewed successfully",
+		Data: dto.RenewAccessTokenResponse{
 			AccessToken:  resp.AccessToken,
 			RefreshToken: resp.RefreshToken,
 		},
