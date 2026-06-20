@@ -153,6 +153,7 @@ func (ass *AuthServiceServer) RenewAccessToken(ctx context.Context, req *auth_ge
 	}
 
 	return &auth_gen.RenewAccessTokenResponse{
-		AccessToken: newAccessToken,
+		AccessToken:  newAccessToken,
+		RefreshToken: req.RefreshToken,
 	}, nil
 }
