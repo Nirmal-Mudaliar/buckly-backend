@@ -19,11 +19,12 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	BucketListService_CreateBucketListItem_FullMethodName       = "/bucket_list.BucketListService/CreateBucketListItem"
-	BucketListService_GetBucketListItemsByUserId_FullMethodName = "/bucket_list.BucketListService/GetBucketListItemsByUserId"
-	BucketListService_GetBucketListItemById_FullMethodName      = "/bucket_list.BucketListService/GetBucketListItemById"
-	BucketListService_UpdateBucketListItem_FullMethodName       = "/bucket_list.BucketListService/UpdateBucketListItem"
-	BucketListService_DeleteBucketListItem_FullMethodName       = "/bucket_list.BucketListService/DeleteBucketListItem"
+	BucketListService_CreateBucketListItem_FullMethodName         = "/bucket_list.BucketListService/CreateBucketListItem"
+	BucketListService_GetBucketListItemsByUserId_FullMethodName   = "/bucket_list.BucketListService/GetBucketListItemsByUserId"
+	BucketListService_GetBucketListItemById_FullMethodName        = "/bucket_list.BucketListService/GetBucketListItemById"
+	BucketListService_UpdateBucketListItem_FullMethodName         = "/bucket_list.BucketListService/UpdateBucketListItem"
+	BucketListService_DeleteBucketListItem_FullMethodName         = "/bucket_list.BucketListService/DeleteBucketListItem"
+	BucketListService_FindMatchesForBucketListItem_FullMethodName = "/bucket_list.BucketListService/FindMatchesForBucketListItem"
 )
 
 // BucketListServiceClient is the client API for BucketListService service.
@@ -35,6 +36,7 @@ type BucketListServiceClient interface {
 	GetBucketListItemById(ctx context.Context, in *GetBucketListItemByIdRequest, opts ...grpc.CallOption) (*GetBucketListItemByIdResponse, error)
 	UpdateBucketListItem(ctx context.Context, in *UpdateBucketListItemRequest, opts ...grpc.CallOption) (*UpdateBucketListItemResponse, error)
 	DeleteBucketListItem(ctx context.Context, in *DeleteBucketListItemRequest, opts ...grpc.CallOption) (*DeleteBucketListItemResponse, error)
+	FindMatchesForBucketListItem(ctx context.Context, in *FindMatchesForBucketListItemRequest, opts ...grpc.CallOption) (*FindMatchesForBucketListItemResponse, error)
 }
 
 type bucketListServiceClient struct {
@@ -95,6 +97,16 @@ func (c *bucketListServiceClient) DeleteBucketListItem(ctx context.Context, in *
 	return out, nil
 }
 
+func (c *bucketListServiceClient) FindMatchesForBucketListItem(ctx context.Context, in *FindMatchesForBucketListItemRequest, opts ...grpc.CallOption) (*FindMatchesForBucketListItemResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(FindMatchesForBucketListItemResponse)
+	err := c.cc.Invoke(ctx, BucketListService_FindMatchesForBucketListItem_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BucketListServiceServer is the server API for BucketListService service.
 // All implementations must embed UnimplementedBucketListServiceServer
 // for forward compatibility.
@@ -104,6 +116,7 @@ type BucketListServiceServer interface {
 	GetBucketListItemById(context.Context, *GetBucketListItemByIdRequest) (*GetBucketListItemByIdResponse, error)
 	UpdateBucketListItem(context.Context, *UpdateBucketListItemRequest) (*UpdateBucketListItemResponse, error)
 	DeleteBucketListItem(context.Context, *DeleteBucketListItemRequest) (*DeleteBucketListItemResponse, error)
+	FindMatchesForBucketListItem(context.Context, *FindMatchesForBucketListItemRequest) (*FindMatchesForBucketListItemResponse, error)
 	mustEmbedUnimplementedBucketListServiceServer()
 }
 
@@ -128,6 +141,9 @@ func (UnimplementedBucketListServiceServer) UpdateBucketListItem(context.Context
 }
 func (UnimplementedBucketListServiceServer) DeleteBucketListItem(context.Context, *DeleteBucketListItemRequest) (*DeleteBucketListItemResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method DeleteBucketListItem not implemented")
+}
+func (UnimplementedBucketListServiceServer) FindMatchesForBucketListItem(context.Context, *FindMatchesForBucketListItemRequest) (*FindMatchesForBucketListItemResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method FindMatchesForBucketListItem not implemented")
 }
 func (UnimplementedBucketListServiceServer) mustEmbedUnimplementedBucketListServiceServer() {}
 func (UnimplementedBucketListServiceServer) testEmbeddedByValue()                           {}
@@ -240,6 +256,24 @@ func _BucketListService_DeleteBucketListItem_Handler(srv interface{}, ctx contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BucketListService_FindMatchesForBucketListItem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FindMatchesForBucketListItemRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BucketListServiceServer).FindMatchesForBucketListItem(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BucketListService_FindMatchesForBucketListItem_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BucketListServiceServer).FindMatchesForBucketListItem(ctx, req.(*FindMatchesForBucketListItemRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // BucketListService_ServiceDesc is the grpc.ServiceDesc for BucketListService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -266,6 +300,10 @@ var BucketListService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteBucketListItem",
 			Handler:    _BucketListService_DeleteBucketListItem_Handler,
+		},
+		{
+			MethodName: "FindMatchesForBucketListItem",
+			Handler:    _BucketListService_FindMatchesForBucketListItem_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

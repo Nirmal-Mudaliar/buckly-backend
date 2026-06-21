@@ -12,4 +12,5 @@ service BucketListService {
   rpc GetBucketListItemById(GetBucketListItemByIdRequest) returns (GetBucketListItemByIdResponse);
   rpc UpdateBucketListItem(UpdateBucketListItemRequest) returns (UpdateBucketListItemResponse);
   rpc DeleteBucketListItem(DeleteBucketListItemRequest) returns (DeleteBucketListItemResponse);
+  rpc FindMatchesForBucketListItem(FindMatchesForBucketListItemRequest) returns (FindMatchesForBucketListItemResponse);
 }

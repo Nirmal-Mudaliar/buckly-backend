@@ -80,3 +80,15 @@ message DeleteBucketListItemRequest {
 message DeleteBucketListItemResponse {
   int64 deleted_count = 1;
 }
+
+message FindMatchesForBucketListItemRequest {
+  int64 activity_tag_id = 1;
+  int64 city_id = 2;
+  string timeframe_start_date = 3;
+  string timeframe_end_date = 4;
+  int64 user_id = 5;
+}
+
+message FindMatchesForBucketListItemResponse {
+  repeated BucketListItem bucket_list_items = 1;
+}

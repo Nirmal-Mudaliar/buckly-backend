@@ -195,3 +195,36 @@ func (dss *DatabaseServiceServer) DeleteBucketListItem(
 		DeletedCount: resp,
 	}, nil
 }
+
+func (dss *DatabaseServiceServer) FindMatchesForBucketListItem(
+	ctx context.Context,
+	req *database_gen.FindMatchesForBucketListItemRequest,
+) (
+	*database_gen.FindMatchesForBucketListItemResponse,
+	error,
+) {
+	logger := core_utils.GetLoggerFromContext(ctx)
+	resp, err := dss.Queries.FindMatchesForBucketListItem(
+		ctx,
+		db.FindMatchesForBucketListItemParams{
+			ActivityTagID:      req.ActivityTagId,
+			CityID:             req.CityId,
+			TimeframeEndDate:   utils.ConvertStringToPgtypeDate(&req.TimeframeEndDate),
+			TimeframeStartDate: utils.ConvertStringToPgtypeDate(&req.TimeframeStartDate),
+			UserID:             req.UserId,
+		},
+	)
+	if err != nil {
+		logger.Error("Error occurred while finding matched for bucket list item: ", zap.Error(err))
+		return nil, status.Errorf(codes.Internal, "Failed to find matched for bucket list item: %v", err)
+	}
+
+	bucketListItems := make([]*database_gen.BucketListItem, 0, len(resp))
+	for _, item := range resp {
+		bucketListItems = append(bucketListItems, mapBucketListItem(item))
+	}
+
+	return &database_gen.FindMatchesForBucketListItemResponse{
+		BucketListItems: bucketListItems,
+	}, nil
+}

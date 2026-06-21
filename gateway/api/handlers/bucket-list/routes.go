@@ -43,6 +43,7 @@ func (blh *BucketListHandler) RegisterRoutes(r *gin.Engine) {
 	secured.GET("/items/:id", blh.GetBucketListItemById)
 	secured.PUT("/update", blh.UpdateBucketListItem)
 	secured.DELETE("/items/:id", blh.DeleteBucketListItem)
+	secured.POST("/items/matches", blh.FindMatchesForBucketListItem)
 }
 
 // Create Bucket List godoc
@@ -391,6 +392,73 @@ func (blh *BucketListHandler) DeleteBucketListItem(c *gin.Context) {
 		Success: true,
 		Data: dto.DeleteBucketListItemResponse{
 			DeletedCount: resp.DeletedCount,
+		},
+	})
+}
+
+// FindMatchesForBucketListItem godoc
+// @Summary Find matching bucket list items
+// @Description Find bucket list items from other users that match the specified activity, city, and timeframe
+// @Tags bucket-list
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param request body dto.FindMatchesForBucketListItemRequest true "Match criteria"
+// @Success 200 {object} models.ApiResponse{data=dto.FindMatchesForBucketListItemResponse}
+// @Router /api/v1/bucket-list/items/matches [post]
+func (blh *BucketListHandler) FindMatchesForBucketListItem(c *gin.Context) {
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 5*time.Second)
+	defer cancel()
+
+	logger := utils.GetLoggerFromContext(ctx)
+
+	claims, err := utils.GetClaims(c)
+	if err != nil {
+		logger.Error("Invalid Claims: ", zap.Error(err))
+		c.JSON(http.StatusUnauthorized, models.ApiResponse{
+			Success: false,
+			Message: "Invalid Claims",
+		})
+		return
+	}
+
+	var payload dto.FindMatchesForBucketListItemRequest
+	if err := c.ShouldBindJSON(&payload); err != nil {
+		logger.Error("Invalid Payload:", zap.Error(err))
+		c.JSON(http.StatusBadRequest, models.ApiResponse{
+			Success: false,
+			Message: "Invalid Payload",
+		})
+		return
+	}
+
+	resp, err := blh.bucketListServiceClient.FindMatchesForBucketListItem(
+		ctx,
+		&bucket_list_gen.FindMatchesForBucketListItemRequest{
+			ActivityTagId:      payload.ActivityTagId,
+			CityId:             payload.CityId,
+			TimeframeStartDate: payload.TimeframeStartDate,
+			TimeframeEndDate:   payload.TimeframeEndDate,
+			UserId:             claims.UserId,
+		},
+	)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.ApiResponse{
+			Success: false,
+			Message: "Error occurred while finding matches for bucket list item",
+		})
+		return
+	}
+
+	bucketListItems := make([]dto.BucketListItem, 0, len(resp.BucketListItems))
+	for _, item := range resp.BucketListItems {
+		bucketListItems = append(bucketListItems, bucket_list_utils.MapBucketListItem(item))
+	}
+
+	c.JSON(http.StatusOK, models.ApiResponse{
+		Success: true,
+		Data: dto.FindMatchesForBucketListItemResponse{
+			BucketListItems: bucketListItems,
 		},
 	})
 }

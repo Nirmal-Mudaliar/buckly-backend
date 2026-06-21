@@ -58,3 +58,14 @@ type UpdateBucketListItemResponse struct {
 type DeleteBucketListItemResponse struct {
 	DeletedCount int64 `json:"deleted_count"`
 }
+
+type FindMatchesForBucketListItemRequest struct {
+	ActivityTagId      int64  `json:"activity_tag_id"`
+	CityId             int64  `json:"city_id"`
+	TimeframeStartDate string `json:"timeframe_start_date"`
+	TimeframeEndDate   string `json:"timeframe_end_date"`
+}
+
+type FindMatchesForBucketListItemResponse struct {
+	BucketListItems []BucketListItem `json:"bucket_list_items"`
+}

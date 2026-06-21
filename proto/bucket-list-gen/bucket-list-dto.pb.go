@@ -754,6 +754,126 @@ func (x *DeleteBucketListItemResponse) GetDeletedCount() int64 {
 	return 0
 }
 
+type FindMatchesForBucketListItemRequest struct {
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	ActivityTagId      int64                  `protobuf:"varint,1,opt,name=activity_tag_id,json=activityTagId,proto3" json:"activity_tag_id,omitempty"`
+	CityId             int64                  `protobuf:"varint,2,opt,name=city_id,json=cityId,proto3" json:"city_id,omitempty"`
+	TimeframeStartDate string                 `protobuf:"bytes,3,opt,name=timeframe_start_date,json=timeframeStartDate,proto3" json:"timeframe_start_date,omitempty"`
+	TimeframeEndDate   string                 `protobuf:"bytes,4,opt,name=timeframe_end_date,json=timeframeEndDate,proto3" json:"timeframe_end_date,omitempty"`
+	UserId             int64                  `protobuf:"varint,5,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *FindMatchesForBucketListItemRequest) Reset() {
+	*x = FindMatchesForBucketListItemRequest{}
+	mi := &file_proto_bucket_list_dto_bucket_list_dto_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FindMatchesForBucketListItemRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FindMatchesForBucketListItemRequest) ProtoMessage() {}
+
+func (x *FindMatchesForBucketListItemRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_bucket_list_dto_bucket_list_dto_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FindMatchesForBucketListItemRequest.ProtoReflect.Descriptor instead.
+func (*FindMatchesForBucketListItemRequest) Descriptor() ([]byte, []int) {
+	return file_proto_bucket_list_dto_bucket_list_dto_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *FindMatchesForBucketListItemRequest) GetActivityTagId() int64 {
+	if x != nil {
+		return x.ActivityTagId
+	}
+	return 0
+}
+
+func (x *FindMatchesForBucketListItemRequest) GetCityId() int64 {
+	if x != nil {
+		return x.CityId
+	}
+	return 0
+}
+
+func (x *FindMatchesForBucketListItemRequest) GetTimeframeStartDate() string {
+	if x != nil {
+		return x.TimeframeStartDate
+	}
+	return ""
+}
+
+func (x *FindMatchesForBucketListItemRequest) GetTimeframeEndDate() string {
+	if x != nil {
+		return x.TimeframeEndDate
+	}
+	return ""
+}
+
+func (x *FindMatchesForBucketListItemRequest) GetUserId() int64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+type FindMatchesForBucketListItemResponse struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	BucketListItems []*BucketListItem      `protobuf:"bytes,1,rep,name=bucket_list_items,json=bucketListItems,proto3" json:"bucket_list_items,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *FindMatchesForBucketListItemResponse) Reset() {
+	*x = FindMatchesForBucketListItemResponse{}
+	mi := &file_proto_bucket_list_dto_bucket_list_dto_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FindMatchesForBucketListItemResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FindMatchesForBucketListItemResponse) ProtoMessage() {}
+
+func (x *FindMatchesForBucketListItemResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_bucket_list_dto_bucket_list_dto_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FindMatchesForBucketListItemResponse.ProtoReflect.Descriptor instead.
+func (*FindMatchesForBucketListItemResponse) Descriptor() ([]byte, []int) {
+	return file_proto_bucket_list_dto_bucket_list_dto_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *FindMatchesForBucketListItemResponse) GetBucketListItems() []*BucketListItem {
+	if x != nil {
+		return x.BucketListItems
+	}
+	return nil
+}
+
 var File_proto_bucket_list_dto_bucket_list_dto_proto protoreflect.FileDescriptor
 
 const file_proto_bucket_list_dto_bucket_list_dto_proto_rawDesc = "" +
@@ -817,7 +937,15 @@ const file_proto_bucket_list_dto_bucket_list_dto_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\x03R\x06userId\"C\n" +
 	"\x1cDeleteBucketListItemResponse\x12#\n" +
-	"\rdeleted_count\x18\x01 \x01(\x03R\fdeletedCountB\x17Z\x15proto/bucket-list-genb\x06proto3"
+	"\rdeleted_count\x18\x01 \x01(\x03R\fdeletedCount\"\xdf\x01\n" +
+	"#FindMatchesForBucketListItemRequest\x12&\n" +
+	"\x0factivity_tag_id\x18\x01 \x01(\x03R\ractivityTagId\x12\x17\n" +
+	"\acity_id\x18\x02 \x01(\x03R\x06cityId\x120\n" +
+	"\x14timeframe_start_date\x18\x03 \x01(\tR\x12timeframeStartDate\x12,\n" +
+	"\x12timeframe_end_date\x18\x04 \x01(\tR\x10timeframeEndDate\x12\x17\n" +
+	"\auser_id\x18\x05 \x01(\x03R\x06userId\"o\n" +
+	"$FindMatchesForBucketListItemResponse\x12G\n" +
+	"\x11bucket_list_items\x18\x01 \x03(\v2\x1b.bucket_list.BucketListItemR\x0fbucketListItemsB\x17Z\x15proto/bucket-list-genb\x06proto3"
 
 var (
 	file_proto_bucket_list_dto_bucket_list_dto_proto_rawDescOnce sync.Once
@@ -831,33 +959,36 @@ func file_proto_bucket_list_dto_bucket_list_dto_proto_rawDescGZIP() []byte {
 	return file_proto_bucket_list_dto_bucket_list_dto_proto_rawDescData
 }
 
-var file_proto_bucket_list_dto_bucket_list_dto_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
+var file_proto_bucket_list_dto_bucket_list_dto_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
 var file_proto_bucket_list_dto_bucket_list_dto_proto_goTypes = []any{
-	(*BucketListItem)(nil),                     // 0: bucket_list.BucketListItem
-	(*CreateBucketListItemRequest)(nil),        // 1: bucket_list.CreateBucketListItemRequest
-	(*CreateBucketListItemResponse)(nil),       // 2: bucket_list.CreateBucketListItemResponse
-	(*GetBucketListItemsByUserIdRequest)(nil),  // 3: bucket_list.GetBucketListItemsByUserIdRequest
-	(*GetBucketListItemsByUserIdResponse)(nil), // 4: bucket_list.GetBucketListItemsByUserIdResponse
-	(*GetBucketListItemByIdRequest)(nil),       // 5: bucket_list.GetBucketListItemByIdRequest
-	(*GetBucketListItemByIdResponse)(nil),      // 6: bucket_list.GetBucketListItemByIdResponse
-	(*UpdateBucketListItemRequest)(nil),        // 7: bucket_list.UpdateBucketListItemRequest
-	(*UpdateBucketListItemResponse)(nil),       // 8: bucket_list.UpdateBucketListItemResponse
-	(*DeleteBucketListItemRequest)(nil),        // 9: bucket_list.DeleteBucketListItemRequest
-	(*DeleteBucketListItemResponse)(nil),       // 10: bucket_list.DeleteBucketListItemResponse
-	(*timestamppb.Timestamp)(nil),              // 11: google.protobuf.Timestamp
+	(*BucketListItem)(nil),                       // 0: bucket_list.BucketListItem
+	(*CreateBucketListItemRequest)(nil),          // 1: bucket_list.CreateBucketListItemRequest
+	(*CreateBucketListItemResponse)(nil),         // 2: bucket_list.CreateBucketListItemResponse
+	(*GetBucketListItemsByUserIdRequest)(nil),    // 3: bucket_list.GetBucketListItemsByUserIdRequest
+	(*GetBucketListItemsByUserIdResponse)(nil),   // 4: bucket_list.GetBucketListItemsByUserIdResponse
+	(*GetBucketListItemByIdRequest)(nil),         // 5: bucket_list.GetBucketListItemByIdRequest
+	(*GetBucketListItemByIdResponse)(nil),        // 6: bucket_list.GetBucketListItemByIdResponse
+	(*UpdateBucketListItemRequest)(nil),          // 7: bucket_list.UpdateBucketListItemRequest
+	(*UpdateBucketListItemResponse)(nil),         // 8: bucket_list.UpdateBucketListItemResponse
+	(*DeleteBucketListItemRequest)(nil),          // 9: bucket_list.DeleteBucketListItemRequest
+	(*DeleteBucketListItemResponse)(nil),         // 10: bucket_list.DeleteBucketListItemResponse
+	(*FindMatchesForBucketListItemRequest)(nil),  // 11: bucket_list.FindMatchesForBucketListItemRequest
+	(*FindMatchesForBucketListItemResponse)(nil), // 12: bucket_list.FindMatchesForBucketListItemResponse
+	(*timestamppb.Timestamp)(nil),                // 13: google.protobuf.Timestamp
 }
 var file_proto_bucket_list_dto_bucket_list_dto_proto_depIdxs = []int32{
-	11, // 0: bucket_list.BucketListItem.insert_ts:type_name -> google.protobuf.Timestamp
-	11, // 1: bucket_list.BucketListItem.modified_ts:type_name -> google.protobuf.Timestamp
+	13, // 0: bucket_list.BucketListItem.insert_ts:type_name -> google.protobuf.Timestamp
+	13, // 1: bucket_list.BucketListItem.modified_ts:type_name -> google.protobuf.Timestamp
 	0,  // 2: bucket_list.CreateBucketListItemResponse.bucket_list_item:type_name -> bucket_list.BucketListItem
 	0,  // 3: bucket_list.GetBucketListItemsByUserIdResponse.bucket_list_items:type_name -> bucket_list.BucketListItem
 	0,  // 4: bucket_list.GetBucketListItemByIdResponse.bucket_list_item:type_name -> bucket_list.BucketListItem
 	0,  // 5: bucket_list.UpdateBucketListItemResponse.bucket_list_item:type_name -> bucket_list.BucketListItem
-	6,  // [6:6] is the sub-list for method output_type
-	6,  // [6:6] is the sub-list for method input_type
-	6,  // [6:6] is the sub-list for extension type_name
-	6,  // [6:6] is the sub-list for extension extendee
-	0,  // [0:6] is the sub-list for field type_name
+	0,  // 6: bucket_list.FindMatchesForBucketListItemResponse.bucket_list_items:type_name -> bucket_list.BucketListItem
+	7,  // [7:7] is the sub-list for method output_type
+	7,  // [7:7] is the sub-list for method input_type
+	7,  // [7:7] is the sub-list for extension type_name
+	7,  // [7:7] is the sub-list for extension extendee
+	0,  // [0:7] is the sub-list for field type_name
 }
 
 func init() { file_proto_bucket_list_dto_bucket_list_dto_proto_init() }
@@ -871,7 +1002,7 @@ func file_proto_bucket_list_dto_bucket_list_dto_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_bucket_list_dto_bucket_list_dto_proto_rawDesc), len(file_proto_bucket_list_dto_bucket_list_dto_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   11,
+			NumMessages:   13,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

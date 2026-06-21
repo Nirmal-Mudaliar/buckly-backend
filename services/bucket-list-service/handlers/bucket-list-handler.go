@@ -154,3 +154,35 @@ func (blss *BucketListServiceServer) DeleteBucketListItem(
 		DeletedCount: resp.DeletedCount,
 	}, nil
 }
+
+func (blss *BucketListServiceServer) FindMatchesForBucketListItem(
+	ctx context.Context,
+	req *bucket_list_gen.FindMatchesForBucketListItemRequest,
+) (
+	*bucket_list_gen.FindMatchesForBucketListItemResponse,
+	error,
+) {
+	resp, err := blss.DatabaseServiceClient.FindMatchesForBucketListItem(
+		ctx,
+		&database_gen.FindMatchesForBucketListItemRequest{
+			ActivityTagId:      req.ActivityTagId,
+			CityId:             req.CityId,
+			TimeframeStartDate: req.TimeframeStartDate,
+			TimeframeEndDate:   req.TimeframeEndDate,
+			UserId:             req.UserId,
+		},
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	bucketListItems := make([]*bucket_list_gen.BucketListItem, 0, len(resp.BucketListItems))
+	for _, item := range resp.BucketListItems {
+		bucketListItems = append(bucketListItems, mapBucketListItem(item))
+	}
+
+	return &bucket_list_gen.FindMatchesForBucketListItemResponse{
+		BucketListItems: bucketListItems,
+	}, nil
+}
