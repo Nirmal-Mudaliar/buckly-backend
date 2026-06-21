@@ -162,8 +162,6 @@ func (h *AuthHandler) VerifyOTP(c *gin.Context) {
 // @Produce      json
 // @Param        body  body  dto.RenewAccessTokenRequest  true  "Renew access token details"
 // @Success      200  {object}  models.ApiResponse{data=dto.RenewAccessTokenResponse}
-// @Failure      400  {object}  models.ApiResponse
-// @Failure      500  {object}  models.ApiResponse
 // @Router       /api/v1/auth/renew-access-token [post]
 func (h *AuthHandler) RenewAccessToken(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 5*time.Second)
