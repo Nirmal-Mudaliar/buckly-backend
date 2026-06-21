@@ -37,3 +37,11 @@ message CreateBucketListItemRequest {
 message CreateBucketListItemResponse {
   BucketListItem bucket_list_item = 1;
 }
+
+message GetBucketListItemsByUserIdRequest {
+  int64 user_id = 1;
+}
+
+message GetBucketListItemsByUserIdResponse {
+  repeated BucketListItem bucket_list_items = 1;
+}

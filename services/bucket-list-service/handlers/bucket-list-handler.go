@@ -1,19 +1,12 @@
 package handlers
 
 import (
-	"buckly-ms/core/utils"
 	bucket_list_gen "buckly-ms/proto/bucket-list-gen"
 	database_gen "buckly-ms/proto/database-gen"
 	"context"
-
-	"go.uber.org/zap"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
 func (blss *BucketListServiceServer) CreateBucketListItem(ctx context.Context, req *bucket_list_gen.CreateBucketListItemRequest) (*bucket_list_gen.CreateBucketListItemResponse, error) {
-	logger := utils.GetLoggerFromContext(ctx)
-
 	resp, err := blss.DatabaseServiceClient.CreateBucketListItem(ctx, &database_gen.CreateBucketListItemRequest{
 		UserId:             req.UserId,
 		ActivityTagId:      req.ActivityTagId,
@@ -26,8 +19,7 @@ func (blss *BucketListServiceServer) CreateBucketListItem(ctx context.Context, r
 		IsPublic:           req.IsPublic,
 	})
 	if err != nil {
-		logger.Error("Error creating bucket list item", zap.Error(err))
-		return nil, status.Errorf(codes.Internal, "Failed to create bucket list item: %v", err)
+		return nil, err
 	}
 
 	return &bucket_list_gen.CreateBucketListItemResponse{
@@ -54,4 +46,32 @@ func mapBucketListItem(item *database_gen.BucketListItem) *bucket_list_gen.Bucke
 		InsertTs:           item.InsertTs,
 		ModifiedTs:         item.ModifiedTs,
 	}
+}
+
+func (blss *BucketListServiceServer) GetBucketListItemsByUserId(
+	ctx context.Context,
+	req *bucket_list_gen.GetBucketListItemsByUserIdRequest,
+) (
+	*bucket_list_gen.GetBucketListItemsByUserIdResponse,
+	error,
+) {
+	resp, err := blss.DatabaseServiceClient.GetBucketListItemsByUserId(
+		ctx,
+		&database_gen.GetBucketListItemsByUserIdRequest{
+			UserId: req.UserId,
+		},
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	bucketListItems := make([]*bucket_list_gen.BucketListItem, 0, len(resp.BucketListItems))
+	for _, item := range resp.BucketListItems {
+		bucketListItems = append(bucketListItems, mapBucketListItem(item))
+	}
+
+	return &bucket_list_gen.GetBucketListItemsByUserIdResponse{
+		BucketListItems: bucketListItems,
+	}, nil
 }

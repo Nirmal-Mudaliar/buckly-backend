@@ -19,4 +19,5 @@ service DatabaseService {
   rpc DeleteUnverifiedUserByUserId(DeleteUnverifiedUserByUserIdRequest) returns (DeleteUnverifiedUserByUserIdResponse);
 
   rpc CreateBucketListItem(CreateBucketListItemRequest) returns (CreateBucketListItemResponse);
+  rpc GetBucketListItemsByUserId(GetBucketListItemsByUserIdRequest) returns (GetBucketListItemsByUserIdResponse);
 }

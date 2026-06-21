@@ -19,7 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	BucketListService_CreateBucketListItem_FullMethodName = "/bucket_list.BucketListService/CreateBucketListItem"
+	BucketListService_CreateBucketListItem_FullMethodName       = "/bucket_list.BucketListService/CreateBucketListItem"
+	BucketListService_GetBucketListItemsByUserId_FullMethodName = "/bucket_list.BucketListService/GetBucketListItemsByUserId"
 )
 
 // BucketListServiceClient is the client API for BucketListService service.
@@ -27,6 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type BucketListServiceClient interface {
 	CreateBucketListItem(ctx context.Context, in *CreateBucketListItemRequest, opts ...grpc.CallOption) (*CreateBucketListItemResponse, error)
+	GetBucketListItemsByUserId(ctx context.Context, in *GetBucketListItemsByUserIdRequest, opts ...grpc.CallOption) (*GetBucketListItemsByUserIdResponse, error)
 }
 
 type bucketListServiceClient struct {
@@ -47,11 +49,22 @@ func (c *bucketListServiceClient) CreateBucketListItem(ctx context.Context, in *
 	return out, nil
 }
 
+func (c *bucketListServiceClient) GetBucketListItemsByUserId(ctx context.Context, in *GetBucketListItemsByUserIdRequest, opts ...grpc.CallOption) (*GetBucketListItemsByUserIdResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetBucketListItemsByUserIdResponse)
+	err := c.cc.Invoke(ctx, BucketListService_GetBucketListItemsByUserId_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BucketListServiceServer is the server API for BucketListService service.
 // All implementations must embed UnimplementedBucketListServiceServer
 // for forward compatibility.
 type BucketListServiceServer interface {
 	CreateBucketListItem(context.Context, *CreateBucketListItemRequest) (*CreateBucketListItemResponse, error)
+	GetBucketListItemsByUserId(context.Context, *GetBucketListItemsByUserIdRequest) (*GetBucketListItemsByUserIdResponse, error)
 	mustEmbedUnimplementedBucketListServiceServer()
 }
 
@@ -64,6 +77,9 @@ type UnimplementedBucketListServiceServer struct{}
 
 func (UnimplementedBucketListServiceServer) CreateBucketListItem(context.Context, *CreateBucketListItemRequest) (*CreateBucketListItemResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method CreateBucketListItem not implemented")
+}
+func (UnimplementedBucketListServiceServer) GetBucketListItemsByUserId(context.Context, *GetBucketListItemsByUserIdRequest) (*GetBucketListItemsByUserIdResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetBucketListItemsByUserId not implemented")
 }
 func (UnimplementedBucketListServiceServer) mustEmbedUnimplementedBucketListServiceServer() {}
 func (UnimplementedBucketListServiceServer) testEmbeddedByValue()                           {}
@@ -104,6 +120,24 @@ func _BucketListService_CreateBucketListItem_Handler(srv interface{}, ctx contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BucketListService_GetBucketListItemsByUserId_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetBucketListItemsByUserIdRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BucketListServiceServer).GetBucketListItemsByUserId(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BucketListService_GetBucketListItemsByUserId_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BucketListServiceServer).GetBucketListItemsByUserId(ctx, req.(*GetBucketListItemsByUserIdRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // BucketListService_ServiceDesc is the grpc.ServiceDesc for BucketListService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -114,6 +148,10 @@ var BucketListService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateBucketListItem",
 			Handler:    _BucketListService_CreateBucketListItem_Handler,
+		},
+		{
+			MethodName: "GetBucketListItemsByUserId",
+			Handler:    _BucketListService_GetBucketListItemsByUserId_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

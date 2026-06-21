@@ -30,3 +30,7 @@ type CreateBucketListRequest struct {
 type CreateBucketListResponse struct {
 	BucketListItem BucketListItem `json:"bucket_list_item"`
 }
+
+type GetBucketListItemsByUserIdResponse struct {
+	BucketListItems []BucketListItem `json:"bucket_list_items"`
+}

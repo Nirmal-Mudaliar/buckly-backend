@@ -3,16 +3,19 @@ package bucket_list
 import (
 	"buckly-ms/core/utils"
 	"buckly-ms/gateway/api/handlers/bucket-list/dto"
+	bucket_list_utils "buckly-ms/gateway/api/handlers/bucket-list/utils"
 	"buckly-ms/gateway/config"
 	"buckly-ms/gateway/contracts"
 	"buckly-ms/gateway/middleware"
 	"buckly-ms/gateway/models"
+
 	bucket_list_gen "buckly-ms/proto/bucket-list-gen"
 	"context"
 	"net/http"
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 type BucketListHandler struct {
@@ -33,6 +36,7 @@ func NewBucketListHandler(
 func (blh *BucketListHandler) RegisterRoutes(r *gin.Engine) {
 	secured := r.Group("/api/v1/bucket-list", middleware.TokenMiddleware(blh.config.JWTSecret))
 	secured.POST("/create", blh.CreateBucketList)
+	secured.GET("/items", blh.GetBucketListItemsByUserId)
 }
 
 // Create Bucket List godoc
@@ -53,7 +57,7 @@ func (blh *BucketListHandler) CreateBucketList(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, models.ApiResponse{
 			Success: false,
-			Message: "Claims not found",
+			Message: "Invalid Claims",
 		})
 		return
 	}
@@ -90,22 +94,61 @@ func (blh *BucketListHandler) CreateBucketList(c *gin.Context) {
 	c.JSON(http.StatusOK, models.ApiResponse{
 		Success: true,
 		Data: dto.CreateBucketListResponse{
-			BucketListItem: dto.BucketListItem{
-				Id:                 resp.BucketListItem.Id,
-				UserId:             resp.BucketListItem.UserId,
-				ActivityTagId:      resp.BucketListItem.ActivityTagId,
-				CountryId:          resp.BucketListItem.CountryId,
-				StateId:            resp.BucketListItem.StateId,
-				CityId:             resp.BucketListItem.CityId,
-				TimeframeStartDate: resp.BucketListItem.TimeframeStartDate,
-				TimeframeEndDate:   resp.BucketListItem.TimeframeEndDate,
-				Note:               resp.BucketListItem.Note,
-				IsPublic:           resp.BucketListItem.IsPublic,
-				Status:             resp.BucketListItem.Status,
-				InsertTs:           resp.BucketListItem.InsertTs.AsTime().String(),
-				ModifiedTs:         resp.BucketListItem.ModifiedTs.AsTime().String(),
-			},
+			BucketListItem: bucket_list_utils.MapBucketListItem(resp.BucketListItem),
 		},
 	})
 
+}
+
+// Get Bucket List Items By User Id godoc
+// @Summary      Get bucket list items for the authenticated user
+// @Description  Fetch all bucket list items belonging to the authenticated user
+// @Tags         bucket-list
+// @Accept       json
+// @Produce      json
+// @Security     BearerAuth
+// @Success      200  {object}  models.ApiResponse{data=dto.CreateBucketListResponse}
+// @Router       /api/v1/bucket-list/items [get]
+func (blh *BucketListHandler) GetBucketListItemsByUserId(c *gin.Context) {
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 5*time.Second)
+	defer cancel()
+
+	logger := utils.GetLoggerFromContext(ctx)
+
+	claims, err := utils.GetClaims(c)
+	if err != nil {
+		logger.Error("Invalid Claims", zap.Error(err))
+		c.JSON(http.StatusUnauthorized, models.ApiResponse{
+			Success: false,
+			Message: "Invalid Claims",
+		})
+		return
+	}
+
+	resp, err := blh.bucketListServiceClient.GetBucketListItemsByUserId(
+		ctx,
+		&bucket_list_gen.GetBucketListItemsByUserIdRequest{
+			UserId: claims.UserId,
+		},
+	)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, models.ApiResponse{
+			Success: false,
+			Message: "Error occurred while fetching bucket list items",
+		})
+		return
+	}
+
+	bucketListItems := make([]dto.BucketListItem, 0, len(resp.BucketListItems))
+	for _, item := range resp.BucketListItems {
+		bucketListItems = append(bucketListItems, bucket_list_utils.MapBucketListItem(item))
+	}
+
+	c.JSON(http.StatusOK, models.ApiResponse{
+		Success: true,
+		Data: dto.GetBucketListItemsByUserIdResponse{
+			BucketListItems: bucketListItems,
+		},
+	})
 }
