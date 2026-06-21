@@ -41,6 +41,7 @@ func (blh *BucketListHandler) RegisterRoutes(r *gin.Engine) {
 	secured.POST("/create", blh.CreateBucketList)
 	secured.GET("/items", blh.GetBucketListItemsByUserId)
 	secured.GET("/items/:id", blh.GetBucketListItemById)
+	secured.GET("/update", blh.UpdateBucketListItem)
 }
 
 // Create Bucket List godoc
@@ -231,6 +232,91 @@ func (blh *BucketListHandler) GetBucketListItemById(c *gin.Context) {
 	c.JSON(http.StatusOK, models.ApiResponse{
 		Success: true,
 		Data: dto.GetBucketListItemByIdResponse{
+			BucketListItem: bucket_list_utils.MapBucketListItem(resp.BucketListItem),
+		},
+	})
+}
+
+// Update Bucket List Item godoc
+// @Summary      Update bucket list item
+// @Description  Update an existing bucket list item belonging to the authenticated user
+// @Tags         bucket-list
+// @Accept       json
+// @Produce      json
+// @Security     BearerAuth
+// @Param        body  body  dto.UpdateBucketListItemRequest  true  "Bucket list item update details"
+// @Success      200  {object}  models.ApiResponse{data=dto.UpdateBucketListItemResponse}
+// @Router       /api/v1/bucket-list/update [put]
+func (blh *BucketListHandler) UpdateBucketListItem(c *gin.Context) {
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 5*time.Second)
+	defer cancel()
+
+	logger := utils.GetLoggerFromContext(ctx)
+
+	claims, err := utils.GetClaims(c)
+	if err != nil {
+		logger.Error("Invalid Claims: ", zap.Error(err))
+		c.JSON(http.StatusUnauthorized, models.ApiResponse{
+			Success: false,
+			Message: "Invalid Claims",
+		})
+		return
+	}
+
+	var payload dto.UpdateBucketListItemRequest
+	if err := c.ShouldBindJSON(&payload); err != nil {
+		logger.Error("Invalid Payload: ", zap.Error(err))
+		c.JSON(http.StatusBadRequest, models.ApiResponse{
+			Success: false,
+			Message: "Invalid Payload",
+		})
+		return
+	}
+
+	resp, err := blh.bucketListServiceClient.UpdateBucketListItem(
+		ctx,
+		&bucket_list_gen.UpdateBucketListItemRequest{
+			Id:                 payload.Id,
+			UserId:             claims.UserId,
+			ActivityTagId:      payload.ActivityTagId,
+			CountryId:          payload.CountryId,
+			StateId:            payload.StateId,
+			CityId:             payload.CityId,
+			TimeframeStartDate: payload.TimeframeStartDate,
+			TimeframeEndDate:   payload.TimeframeEndDate,
+			Note:               payload.Note,
+			IsPublic:           payload.IsPublic,
+		},
+	)
+
+	if err != nil {
+		st, ok := status.FromError(err)
+		if ok {
+			switch st.Code() {
+			case codes.NotFound:
+				c.JSON(http.StatusNotFound, models.ApiResponse{
+					Success: false,
+					Message: st.Message(),
+				})
+				return
+			default:
+				c.JSON(http.StatusInternalServerError, models.ApiResponse{
+					Success: false,
+					Message: "Error occured while updating bucket list item",
+				})
+				return
+			}
+		}
+		c.JSON(http.StatusInternalServerError, models.ApiResponse{
+			Success: false,
+			Message: "Error occured while updating bucket list item",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, models.ApiResponse{
+		Success: true,
+		Data: dto.UpdateBucketListItemResponse{
 			BucketListItem: bucket_list_utils.MapBucketListItem(resp.BucketListItem),
 		},
 	})

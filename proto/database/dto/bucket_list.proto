@@ -54,3 +54,20 @@ message GetBucketListItemByIdRequest {
 message GetBucketListItemByIdResponse {
   BucketListItem bucket_list_item = 1;
 }
+
+message UpdateBucketListItemRequest {
+  int64 id = 1;
+  int64 user_id = 2;
+  int64 activity_tag_id = 3;
+  int64 country_id = 4;
+  int64 state_id = 5;
+  int64 city_id = 6;
+  string timeframe_start_date = 7;
+  string timeframe_end_date = 8;
+  string note = 9;
+  bool is_public = 10;
+}
+
+message UpdateBucketListItemResponse {
+  BucketListItem bucket_list_item = 1;
+}

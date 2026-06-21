@@ -498,6 +498,166 @@ func (x *GetBucketListItemByIdResponse) GetBucketListItem() *BucketListItem {
 	return nil
 }
 
+type UpdateBucketListItemRequest struct {
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	Id                 int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	UserId             int64                  `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	ActivityTagId      int64                  `protobuf:"varint,3,opt,name=activity_tag_id,json=activityTagId,proto3" json:"activity_tag_id,omitempty"`
+	CountryId          int64                  `protobuf:"varint,4,opt,name=country_id,json=countryId,proto3" json:"country_id,omitempty"`
+	StateId            int64                  `protobuf:"varint,5,opt,name=state_id,json=stateId,proto3" json:"state_id,omitempty"`
+	CityId             int64                  `protobuf:"varint,6,opt,name=city_id,json=cityId,proto3" json:"city_id,omitempty"`
+	TimeframeStartDate string                 `protobuf:"bytes,7,opt,name=timeframe_start_date,json=timeframeStartDate,proto3" json:"timeframe_start_date,omitempty"`
+	TimeframeEndDate   string                 `protobuf:"bytes,8,opt,name=timeframe_end_date,json=timeframeEndDate,proto3" json:"timeframe_end_date,omitempty"`
+	Note               string                 `protobuf:"bytes,9,opt,name=note,proto3" json:"note,omitempty"`
+	IsPublic           bool                   `protobuf:"varint,10,opt,name=is_public,json=isPublic,proto3" json:"is_public,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *UpdateBucketListItemRequest) Reset() {
+	*x = UpdateBucketListItemRequest{}
+	mi := &file_proto_bucket_list_dto_bucket_list_dto_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateBucketListItemRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateBucketListItemRequest) ProtoMessage() {}
+
+func (x *UpdateBucketListItemRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_bucket_list_dto_bucket_list_dto_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateBucketListItemRequest.ProtoReflect.Descriptor instead.
+func (*UpdateBucketListItemRequest) Descriptor() ([]byte, []int) {
+	return file_proto_bucket_list_dto_bucket_list_dto_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *UpdateBucketListItemRequest) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *UpdateBucketListItemRequest) GetUserId() int64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *UpdateBucketListItemRequest) GetActivityTagId() int64 {
+	if x != nil {
+		return x.ActivityTagId
+	}
+	return 0
+}
+
+func (x *UpdateBucketListItemRequest) GetCountryId() int64 {
+	if x != nil {
+		return x.CountryId
+	}
+	return 0
+}
+
+func (x *UpdateBucketListItemRequest) GetStateId() int64 {
+	if x != nil {
+		return x.StateId
+	}
+	return 0
+}
+
+func (x *UpdateBucketListItemRequest) GetCityId() int64 {
+	if x != nil {
+		return x.CityId
+	}
+	return 0
+}
+
+func (x *UpdateBucketListItemRequest) GetTimeframeStartDate() string {
+	if x != nil {
+		return x.TimeframeStartDate
+	}
+	return ""
+}
+
+func (x *UpdateBucketListItemRequest) GetTimeframeEndDate() string {
+	if x != nil {
+		return x.TimeframeEndDate
+	}
+	return ""
+}
+
+func (x *UpdateBucketListItemRequest) GetNote() string {
+	if x != nil {
+		return x.Note
+	}
+	return ""
+}
+
+func (x *UpdateBucketListItemRequest) GetIsPublic() bool {
+	if x != nil {
+		return x.IsPublic
+	}
+	return false
+}
+
+type UpdateBucketListItemResponse struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	BucketListItem *BucketListItem        `protobuf:"bytes,1,opt,name=bucket_list_item,json=bucketListItem,proto3" json:"bucket_list_item,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *UpdateBucketListItemResponse) Reset() {
+	*x = UpdateBucketListItemResponse{}
+	mi := &file_proto_bucket_list_dto_bucket_list_dto_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateBucketListItemResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateBucketListItemResponse) ProtoMessage() {}
+
+func (x *UpdateBucketListItemResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_bucket_list_dto_bucket_list_dto_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateBucketListItemResponse.ProtoReflect.Descriptor instead.
+func (*UpdateBucketListItemResponse) Descriptor() ([]byte, []int) {
+	return file_proto_bucket_list_dto_bucket_list_dto_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *UpdateBucketListItemResponse) GetBucketListItem() *BucketListItem {
+	if x != nil {
+		return x.BucketListItem
+	}
+	return nil
+}
+
 var File_proto_bucket_list_dto_bucket_list_dto_proto protoreflect.FileDescriptor
 
 const file_proto_bucket_list_dto_bucket_list_dto_proto_rawDesc = "" +
@@ -541,7 +701,22 @@ const file_proto_bucket_list_dto_bucket_list_dto_proto_rawDesc = "" +
 	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x17\n" +
 	"\auser_id\x18\x02 \x01(\x03R\x06userId\"f\n" +
 	"\x1dGetBucketListItemByIdResponse\x12E\n" +
-	"\x10bucket_list_item\x18\x02 \x01(\v2\x1b.bucket_list.BucketListItemR\x0ebucketListItemB\x17Z\x15proto/bucket-list-genb\x06proto3"
+	"\x10bucket_list_item\x18\x02 \x01(\v2\x1b.bucket_list.BucketListItemR\x0ebucketListItem\"\xd2\x02\n" +
+	"\x1bUpdateBucketListItemRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x17\n" +
+	"\auser_id\x18\x02 \x01(\x03R\x06userId\x12&\n" +
+	"\x0factivity_tag_id\x18\x03 \x01(\x03R\ractivityTagId\x12\x1d\n" +
+	"\n" +
+	"country_id\x18\x04 \x01(\x03R\tcountryId\x12\x19\n" +
+	"\bstate_id\x18\x05 \x01(\x03R\astateId\x12\x17\n" +
+	"\acity_id\x18\x06 \x01(\x03R\x06cityId\x120\n" +
+	"\x14timeframe_start_date\x18\a \x01(\tR\x12timeframeStartDate\x12,\n" +
+	"\x12timeframe_end_date\x18\b \x01(\tR\x10timeframeEndDate\x12\x12\n" +
+	"\x04note\x18\t \x01(\tR\x04note\x12\x1b\n" +
+	"\tis_public\x18\n" +
+	" \x01(\bR\bisPublic\"e\n" +
+	"\x1cUpdateBucketListItemResponse\x12E\n" +
+	"\x10bucket_list_item\x18\x01 \x01(\v2\x1b.bucket_list.BucketListItemR\x0ebucketListItemB\x17Z\x15proto/bucket-list-genb\x06proto3"
 
 var (
 	file_proto_bucket_list_dto_bucket_list_dto_proto_rawDescOnce sync.Once
@@ -555,7 +730,7 @@ func file_proto_bucket_list_dto_bucket_list_dto_proto_rawDescGZIP() []byte {
 	return file_proto_bucket_list_dto_bucket_list_dto_proto_rawDescData
 }
 
-var file_proto_bucket_list_dto_bucket_list_dto_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_proto_bucket_list_dto_bucket_list_dto_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_proto_bucket_list_dto_bucket_list_dto_proto_goTypes = []any{
 	(*BucketListItem)(nil),                     // 0: bucket_list.BucketListItem
 	(*CreateBucketListItemRequest)(nil),        // 1: bucket_list.CreateBucketListItemRequest
@@ -564,19 +739,22 @@ var file_proto_bucket_list_dto_bucket_list_dto_proto_goTypes = []any{
 	(*GetBucketListItemsByUserIdResponse)(nil), // 4: bucket_list.GetBucketListItemsByUserIdResponse
 	(*GetBucketListItemByIdRequest)(nil),       // 5: bucket_list.GetBucketListItemByIdRequest
 	(*GetBucketListItemByIdResponse)(nil),      // 6: bucket_list.GetBucketListItemByIdResponse
-	(*timestamppb.Timestamp)(nil),              // 7: google.protobuf.Timestamp
+	(*UpdateBucketListItemRequest)(nil),        // 7: bucket_list.UpdateBucketListItemRequest
+	(*UpdateBucketListItemResponse)(nil),       // 8: bucket_list.UpdateBucketListItemResponse
+	(*timestamppb.Timestamp)(nil),              // 9: google.protobuf.Timestamp
 }
 var file_proto_bucket_list_dto_bucket_list_dto_proto_depIdxs = []int32{
-	7, // 0: bucket_list.BucketListItem.insert_ts:type_name -> google.protobuf.Timestamp
-	7, // 1: bucket_list.BucketListItem.modified_ts:type_name -> google.protobuf.Timestamp
+	9, // 0: bucket_list.BucketListItem.insert_ts:type_name -> google.protobuf.Timestamp
+	9, // 1: bucket_list.BucketListItem.modified_ts:type_name -> google.protobuf.Timestamp
 	0, // 2: bucket_list.CreateBucketListItemResponse.bucket_list_item:type_name -> bucket_list.BucketListItem
 	0, // 3: bucket_list.GetBucketListItemsByUserIdResponse.bucket_list_items:type_name -> bucket_list.BucketListItem
 	0, // 4: bucket_list.GetBucketListItemByIdResponse.bucket_list_item:type_name -> bucket_list.BucketListItem
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	0, // 5: bucket_list.UpdateBucketListItemResponse.bucket_list_item:type_name -> bucket_list.BucketListItem
+	6, // [6:6] is the sub-list for method output_type
+	6, // [6:6] is the sub-list for method input_type
+	6, // [6:6] is the sub-list for extension type_name
+	6, // [6:6] is the sub-list for extension extendee
+	0, // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_proto_bucket_list_dto_bucket_list_dto_proto_init() }
@@ -590,7 +768,7 @@ func file_proto_bucket_list_dto_bucket_list_dto_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_bucket_list_dto_bucket_list_dto_proto_rawDesc), len(file_proto_bucket_list_dto_bucket_list_dto_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   7,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -24,29 +24,34 @@ var File_proto_bucket_list_bucket_list_service_proto protoreflect.FileDescriptor
 
 const file_proto_bucket_list_bucket_list_service_proto_rawDesc = "" +
 	"\n" +
-	"+proto/bucket-list/bucket-list-service.proto\x12\vbucket_list\x1a+proto/bucket-list/dto/bucket-list-dto.proto2\xef\x02\n" +
+	"+proto/bucket-list/bucket-list-service.proto\x12\vbucket_list\x1a+proto/bucket-list/dto/bucket-list-dto.proto2\xdc\x03\n" +
 	"\x11BucketListService\x12k\n" +
 	"\x14CreateBucketListItem\x12(.bucket_list.CreateBucketListItemRequest\x1a).bucket_list.CreateBucketListItemResponse\x12}\n" +
 	"\x1aGetBucketListItemsByUserId\x12..bucket_list.GetBucketListItemsByUserIdRequest\x1a/.bucket_list.GetBucketListItemsByUserIdResponse\x12n\n" +
-	"\x15GetBucketListItemById\x12).bucket_list.GetBucketListItemByIdRequest\x1a*.bucket_list.GetBucketListItemByIdResponseB\x17Z\x15proto/bucket-list-genb\x06proto3"
+	"\x15GetBucketListItemById\x12).bucket_list.GetBucketListItemByIdRequest\x1a*.bucket_list.GetBucketListItemByIdResponse\x12k\n" +
+	"\x14UpdateBucketListItem\x12(.bucket_list.UpdateBucketListItemRequest\x1a).bucket_list.UpdateBucketListItemResponseB\x17Z\x15proto/bucket-list-genb\x06proto3"
 
 var file_proto_bucket_list_bucket_list_service_proto_goTypes = []any{
 	(*CreateBucketListItemRequest)(nil),        // 0: bucket_list.CreateBucketListItemRequest
 	(*GetBucketListItemsByUserIdRequest)(nil),  // 1: bucket_list.GetBucketListItemsByUserIdRequest
 	(*GetBucketListItemByIdRequest)(nil),       // 2: bucket_list.GetBucketListItemByIdRequest
-	(*CreateBucketListItemResponse)(nil),       // 3: bucket_list.CreateBucketListItemResponse
-	(*GetBucketListItemsByUserIdResponse)(nil), // 4: bucket_list.GetBucketListItemsByUserIdResponse
-	(*GetBucketListItemByIdResponse)(nil),      // 5: bucket_list.GetBucketListItemByIdResponse
+	(*UpdateBucketListItemRequest)(nil),        // 3: bucket_list.UpdateBucketListItemRequest
+	(*CreateBucketListItemResponse)(nil),       // 4: bucket_list.CreateBucketListItemResponse
+	(*GetBucketListItemsByUserIdResponse)(nil), // 5: bucket_list.GetBucketListItemsByUserIdResponse
+	(*GetBucketListItemByIdResponse)(nil),      // 6: bucket_list.GetBucketListItemByIdResponse
+	(*UpdateBucketListItemResponse)(nil),       // 7: bucket_list.UpdateBucketListItemResponse
 }
 var file_proto_bucket_list_bucket_list_service_proto_depIdxs = []int32{
 	0, // 0: bucket_list.BucketListService.CreateBucketListItem:input_type -> bucket_list.CreateBucketListItemRequest
 	1, // 1: bucket_list.BucketListService.GetBucketListItemsByUserId:input_type -> bucket_list.GetBucketListItemsByUserIdRequest
 	2, // 2: bucket_list.BucketListService.GetBucketListItemById:input_type -> bucket_list.GetBucketListItemByIdRequest
-	3, // 3: bucket_list.BucketListService.CreateBucketListItem:output_type -> bucket_list.CreateBucketListItemResponse
-	4, // 4: bucket_list.BucketListService.GetBucketListItemsByUserId:output_type -> bucket_list.GetBucketListItemsByUserIdResponse
-	5, // 5: bucket_list.BucketListService.GetBucketListItemById:output_type -> bucket_list.GetBucketListItemByIdResponse
-	3, // [3:6] is the sub-list for method output_type
-	0, // [0:3] is the sub-list for method input_type
+	3, // 3: bucket_list.BucketListService.UpdateBucketListItem:input_type -> bucket_list.UpdateBucketListItemRequest
+	4, // 4: bucket_list.BucketListService.CreateBucketListItem:output_type -> bucket_list.CreateBucketListItemResponse
+	5, // 5: bucket_list.BucketListService.GetBucketListItemsByUserId:output_type -> bucket_list.GetBucketListItemsByUserIdResponse
+	6, // 6: bucket_list.BucketListService.GetBucketListItemById:output_type -> bucket_list.GetBucketListItemByIdResponse
+	7, // 7: bucket_list.BucketListService.UpdateBucketListItem:output_type -> bucket_list.UpdateBucketListItemResponse
+	4, // [4:8] is the sub-list for method output_type
+	0, // [0:4] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name

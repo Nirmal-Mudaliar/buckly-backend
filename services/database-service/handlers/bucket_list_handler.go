@@ -121,3 +121,51 @@ func (dss *DatabaseServiceServer) GetBucketListItemById(
 		BucketListItem: mapBucketListItem(resp),
 	}, nil
 }
+
+func (dss *DatabaseServiceServer) UpdateBucketListItem(
+	ctx context.Context,
+	req *database_gen.UpdateBucketListItemRequest,
+) (
+	*database_gen.UpdateBucketListItemResponse,
+	error,
+) {
+	logger := core_utils.GetLoggerFromContext(ctx)
+	_, err := dss.GetBucketListItemById(
+		ctx,
+		&database_gen.GetBucketListItemByIdRequest{
+			Id:     req.Id,
+			UserId: req.UserId,
+		},
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	now := time.Now()
+	resp, err := dss.Queries.UpdateBucketListItem(
+		ctx,
+		db.UpdateBucketListItemParams{
+			ID:                 req.Id,
+			ActivityTagID:      req.ActivityTagId,
+			CountryID:          req.CountryId,
+			StateID:            req.StateId,
+			CityID:             req.CityId,
+			TimeframeStartDate: utils.ConvertStringToPgtypeDate(&req.TimeframeStartDate),
+			TimeframeEndDate:   utils.ConvertStringToPgtypeDate(&req.TimeframeEndDate),
+			Note:               utils.ConvertStringToPgtypeText(&req.Note),
+			UserID:             req.UserId,
+			IsPublic:           req.IsPublic,
+			ModifiedTs:         utils.ConvertTimeToPgtypeTimestamptz(now),
+		},
+	)
+
+	if err != nil {
+		logger.Error("Error occurred while updating bucket list item ", zap.Error(err))
+		return nil, status.Errorf(codes.Internal, "Error occurred while updating bucket list item: %v", err)
+	}
+
+	return &database_gen.UpdateBucketListItemResponse{
+		BucketListItem: mapBucketListItem(resp),
+	}, nil
+}
