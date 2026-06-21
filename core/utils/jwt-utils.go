@@ -24,7 +24,7 @@ func GenerateAccessToken(userId int64, email string, phoneNo string, isPhoneNoVe
 		PhoneNo:           phoneNo,
 		IsPhoneNoVerified: isPhoneNoVerified,
 		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(15 * time.Minute)),
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(8 * time.Hour)),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
 		},
 	}

@@ -402,6 +402,102 @@ func (x *GetBucketListItemsByUserIdResponse) GetBucketListItems() []*BucketListI
 	return nil
 }
 
+type GetBucketListItemByIdRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
+	UserId        int64                  `protobuf:"varint,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetBucketListItemByIdRequest) Reset() {
+	*x = GetBucketListItemByIdRequest{}
+	mi := &file_proto_bucket_list_dto_bucket_list_dto_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetBucketListItemByIdRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetBucketListItemByIdRequest) ProtoMessage() {}
+
+func (x *GetBucketListItemByIdRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_bucket_list_dto_bucket_list_dto_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetBucketListItemByIdRequest.ProtoReflect.Descriptor instead.
+func (*GetBucketListItemByIdRequest) Descriptor() ([]byte, []int) {
+	return file_proto_bucket_list_dto_bucket_list_dto_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *GetBucketListItemByIdRequest) GetId() int64 {
+	if x != nil {
+		return x.Id
+	}
+	return 0
+}
+
+func (x *GetBucketListItemByIdRequest) GetUserId() int64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+type GetBucketListItemByIdResponse struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	BucketListItem *BucketListItem        `protobuf:"bytes,2,opt,name=bucket_list_item,json=bucketListItem,proto3" json:"bucket_list_item,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *GetBucketListItemByIdResponse) Reset() {
+	*x = GetBucketListItemByIdResponse{}
+	mi := &file_proto_bucket_list_dto_bucket_list_dto_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetBucketListItemByIdResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetBucketListItemByIdResponse) ProtoMessage() {}
+
+func (x *GetBucketListItemByIdResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_bucket_list_dto_bucket_list_dto_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetBucketListItemByIdResponse.ProtoReflect.Descriptor instead.
+func (*GetBucketListItemByIdResponse) Descriptor() ([]byte, []int) {
+	return file_proto_bucket_list_dto_bucket_list_dto_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *GetBucketListItemByIdResponse) GetBucketListItem() *BucketListItem {
+	if x != nil {
+		return x.BucketListItem
+	}
+	return nil
+}
+
 var File_proto_bucket_list_dto_bucket_list_dto_proto protoreflect.FileDescriptor
 
 const file_proto_bucket_list_dto_bucket_list_dto_proto_rawDesc = "" +
@@ -440,7 +536,12 @@ const file_proto_bucket_list_dto_bucket_list_dto_proto_rawDesc = "" +
 	"!GetBucketListItemsByUserIdRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\x03R\x06userId\"m\n" +
 	"\"GetBucketListItemsByUserIdResponse\x12G\n" +
-	"\x11bucket_list_items\x18\x01 \x03(\v2\x1b.bucket_list.BucketListItemR\x0fbucketListItemsB\x17Z\x15proto/bucket-list-genb\x06proto3"
+	"\x11bucket_list_items\x18\x01 \x03(\v2\x1b.bucket_list.BucketListItemR\x0fbucketListItems\"G\n" +
+	"\x1cGetBucketListItemByIdRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x17\n" +
+	"\auser_id\x18\x02 \x01(\x03R\x06userId\"f\n" +
+	"\x1dGetBucketListItemByIdResponse\x12E\n" +
+	"\x10bucket_list_item\x18\x02 \x01(\v2\x1b.bucket_list.BucketListItemR\x0ebucketListItemB\x17Z\x15proto/bucket-list-genb\x06proto3"
 
 var (
 	file_proto_bucket_list_dto_bucket_list_dto_proto_rawDescOnce sync.Once
@@ -454,25 +555,28 @@ func file_proto_bucket_list_dto_bucket_list_dto_proto_rawDescGZIP() []byte {
 	return file_proto_bucket_list_dto_bucket_list_dto_proto_rawDescData
 }
 
-var file_proto_bucket_list_dto_bucket_list_dto_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_proto_bucket_list_dto_bucket_list_dto_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_proto_bucket_list_dto_bucket_list_dto_proto_goTypes = []any{
 	(*BucketListItem)(nil),                     // 0: bucket_list.BucketListItem
 	(*CreateBucketListItemRequest)(nil),        // 1: bucket_list.CreateBucketListItemRequest
 	(*CreateBucketListItemResponse)(nil),       // 2: bucket_list.CreateBucketListItemResponse
 	(*GetBucketListItemsByUserIdRequest)(nil),  // 3: bucket_list.GetBucketListItemsByUserIdRequest
 	(*GetBucketListItemsByUserIdResponse)(nil), // 4: bucket_list.GetBucketListItemsByUserIdResponse
-	(*timestamppb.Timestamp)(nil),              // 5: google.protobuf.Timestamp
+	(*GetBucketListItemByIdRequest)(nil),       // 5: bucket_list.GetBucketListItemByIdRequest
+	(*GetBucketListItemByIdResponse)(nil),      // 6: bucket_list.GetBucketListItemByIdResponse
+	(*timestamppb.Timestamp)(nil),              // 7: google.protobuf.Timestamp
 }
 var file_proto_bucket_list_dto_bucket_list_dto_proto_depIdxs = []int32{
-	5, // 0: bucket_list.BucketListItem.insert_ts:type_name -> google.protobuf.Timestamp
-	5, // 1: bucket_list.BucketListItem.modified_ts:type_name -> google.protobuf.Timestamp
+	7, // 0: bucket_list.BucketListItem.insert_ts:type_name -> google.protobuf.Timestamp
+	7, // 1: bucket_list.BucketListItem.modified_ts:type_name -> google.protobuf.Timestamp
 	0, // 2: bucket_list.CreateBucketListItemResponse.bucket_list_item:type_name -> bucket_list.BucketListItem
 	0, // 3: bucket_list.GetBucketListItemsByUserIdResponse.bucket_list_items:type_name -> bucket_list.BucketListItem
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	0, // 4: bucket_list.GetBucketListItemByIdResponse.bucket_list_item:type_name -> bucket_list.BucketListItem
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_proto_bucket_list_dto_bucket_list_dto_proto_init() }
@@ -486,7 +590,7 @@ func file_proto_bucket_list_dto_bucket_list_dto_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_bucket_list_dto_bucket_list_dto_proto_rawDesc), len(file_proto_bucket_list_dto_bucket_list_dto_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   7,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

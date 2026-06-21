@@ -9,5 +9,5 @@ package bucket_list;
 service BucketListService {
   rpc CreateBucketListItem(CreateBucketListItemRequest) returns (CreateBucketListItemResponse);
   rpc GetBucketListItemsByUserId(GetBucketListItemsByUserIdRequest) returns (GetBucketListItemsByUserIdResponse);
-
+  rpc GetBucketListItemById(GetBucketListItemByIdRequest) returns (GetBucketListItemByIdResponse);
 }

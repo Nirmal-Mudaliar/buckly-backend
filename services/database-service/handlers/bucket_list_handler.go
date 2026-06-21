@@ -6,6 +6,8 @@ import (
 	db "buckly-ms/services/database-service/db/generated"
 	"buckly-ms/services/database-service/utils"
 	"context"
+	"database/sql"
+	"errors"
 	"time"
 
 	"go.uber.org/zap"
@@ -84,5 +86,38 @@ func (dss *DatabaseServiceServer) GetBucketListItemsByUserId(
 
 	return &database_gen.GetBucketListItemsByUserIdResponse{
 		BucketListItems: bucketListItems,
+	}, nil
+}
+
+func (dss *DatabaseServiceServer) GetBucketListItemById(
+	ctx context.Context,
+	req *database_gen.GetBucketListItemByIdRequest,
+) (
+	*database_gen.GetBucketListItemByIdResponse,
+	error,
+) {
+	logger := core_utils.GetLoggerFromContext(ctx)
+
+	resp, err := dss.Queries.GetBucketListItemById(
+		ctx,
+		db.GetBucketListItemByIdParams{
+			ID:     req.Id,
+			UserID: req.UserId,
+		},
+	)
+
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, status.Error(
+				codes.NotFound,
+				"bucket list item not found",
+			)
+		}
+		logger.Error("Error occured while fetching bucket list item by id", zap.Error(err))
+		return nil, status.Errorf(codes.Internal, "Failed to fetch bucket list item by id: %v", err)
+	}
+
+	return &database_gen.GetBucketListItemByIdResponse{
+		BucketListItem: mapBucketListItem(resp),
 	}, nil
 }

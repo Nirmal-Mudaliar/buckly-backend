@@ -8,6 +8,7 @@ import (
 	"buckly-ms/gateway/contracts"
 	"buckly-ms/gateway/middleware"
 	"buckly-ms/gateway/models"
+	"strconv"
 
 	bucket_list_gen "buckly-ms/proto/bucket-list-gen"
 	"context"
@@ -16,6 +17,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 type BucketListHandler struct {
@@ -37,6 +40,7 @@ func (blh *BucketListHandler) RegisterRoutes(r *gin.Engine) {
 	secured := r.Group("/api/v1/bucket-list", middleware.TokenMiddleware(blh.config.JWTSecret))
 	secured.POST("/create", blh.CreateBucketList)
 	secured.GET("/items", blh.GetBucketListItemsByUserId)
+	secured.GET("/items/:id", blh.GetBucketListItemById)
 }
 
 // Create Bucket List godoc
@@ -149,6 +153,85 @@ func (blh *BucketListHandler) GetBucketListItemsByUserId(c *gin.Context) {
 		Success: true,
 		Data: dto.GetBucketListItemsByUserIdResponse{
 			BucketListItems: bucketListItems,
+		},
+	})
+}
+
+// Get Bucket List Item By Id godoc
+// @Summary      Get bucket list item by ID
+// @Description  Fetch a bucket list item belonging to the authenticated user by its ID
+// @Tags         bucket-list
+// @Accept       json
+// @Produce      json
+// @Security     BearerAuth
+// @Param        id  query  int  true  "Bucket List Item ID"
+// @Success      200  {object}  models.ApiResponse{data=dto.GetBucketListItemByIdResponse}
+// @Router       /api/v1/bucket-list/items/:id [get]
+func (blh *BucketListHandler) GetBucketListItemById(c *gin.Context) {
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 5*time.Second)
+	defer cancel()
+
+	logger := utils.GetLoggerFromContext(ctx)
+
+	claims, err := utils.GetClaims(c)
+	if err != nil {
+		logger.Error("Invalid Claims: ", zap.Error(err))
+		c.JSON(http.StatusUnauthorized, models.ApiResponse{
+			Success: false,
+			Message: "Invalid Claims",
+		})
+		return
+	}
+
+	idQuery := c.Query("id")
+	id, err := strconv.ParseInt(idQuery, 10, 64)
+
+	if err != nil {
+		logger.Error("Error occurred while parsing id: ", zap.Error(err))
+		c.JSON(http.StatusBadRequest, models.ApiResponse{
+			Success: false,
+			Message: "Error occurred while parsing id",
+		})
+		return
+	}
+
+	resp, err := blh.bucketListServiceClient.GetBucketListItemById(
+		ctx,
+		&bucket_list_gen.GetBucketListItemByIdRequest{
+			Id:     id,
+			UserId: claims.UserId,
+		},
+	)
+
+	if err != nil {
+		st, ok := status.FromError(err)
+		if ok {
+			switch st.Code() {
+			case codes.NotFound:
+				c.JSON(http.StatusNotFound, models.ApiResponse{
+					Success: false,
+					Message: st.Message(),
+				})
+				return
+			default:
+				c.JSON(http.StatusInternalServerError, models.ApiResponse{
+					Success: false,
+					Message: "Error occured while fetching bucket list item",
+				})
+				return
+			}
+		}
+		c.JSON(http.StatusInternalServerError, models.ApiResponse{
+			Success: false,
+			Message: "Error occured while fetching bucket list item",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, models.ApiResponse{
+		Success: true,
+		Data: dto.GetBucketListItemByIdResponse{
+			BucketListItem: bucket_list_utils.MapBucketListItem(resp.BucketListItem),
 		},
 	})
 }

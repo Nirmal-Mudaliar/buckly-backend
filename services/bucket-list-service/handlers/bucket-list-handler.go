@@ -75,3 +75,27 @@ func (blss *BucketListServiceServer) GetBucketListItemsByUserId(
 		BucketListItems: bucketListItems,
 	}, nil
 }
+
+func (blss *BucketListServiceServer) GetBucketListItemById(
+	ctx context.Context,
+	req *bucket_list_gen.GetBucketListItemByIdRequest,
+) (
+	*bucket_list_gen.GetBucketListItemByIdResponse,
+	error,
+) {
+	resp, err := blss.DatabaseServiceClient.GetBucketListItemById(
+		ctx,
+		&database_gen.GetBucketListItemByIdRequest{
+			Id:     req.Id,
+			UserId: req.UserId,
+		},
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &bucket_list_gen.GetBucketListItemByIdResponse{
+		BucketListItem: mapBucketListItem(resp.BucketListItem),
+	}, nil
+}

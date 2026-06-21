@@ -34,3 +34,7 @@ type CreateBucketListResponse struct {
 type GetBucketListItemsByUserIdResponse struct {
 	BucketListItems []BucketListItem `json:"bucket_list_items"`
 }
+
+type GetBucketListItemByIdResponse struct {
+	BucketListItem BucketListItem `json:"bucket_list_item"`
+}
