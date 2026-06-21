@@ -130,18 +130,6 @@ func (dss *DatabaseServiceServer) UpdateBucketListItem(
 	error,
 ) {
 	logger := core_utils.GetLoggerFromContext(ctx)
-	_, err := dss.GetBucketListItemById(
-		ctx,
-		&database_gen.GetBucketListItemByIdRequest{
-			Id:     req.Id,
-			UserId: req.UserId,
-		},
-	)
-
-	if err != nil {
-		return nil, err
-	}
-
 	now := time.Now()
 	resp, err := dss.Queries.UpdateBucketListItem(
 		ctx,
@@ -161,8 +149,14 @@ func (dss *DatabaseServiceServer) UpdateBucketListItem(
 	)
 
 	if err != nil {
-		logger.Error("Error occurred while updating bucket list item ", zap.Error(err))
-		return nil, status.Errorf(codes.Internal, "Error occurred while updating bucket list item: %v", err)
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, status.Error(
+				codes.NotFound,
+				"bucket list item not found",
+			)
+		}
+		logger.Error("Error occured while updating bucket list item by id", zap.Error(err))
+		return nil, status.Errorf(codes.Internal, "Failed to update bucket list item by id: %v", err)
 	}
 
 	return &database_gen.UpdateBucketListItemResponse{

@@ -99,3 +99,34 @@ func (blss *BucketListServiceServer) GetBucketListItemById(
 		BucketListItem: mapBucketListItem(resp.BucketListItem),
 	}, nil
 }
+
+func (blss *BucketListServiceServer) UpdateBucketListItem(
+	ctx context.Context,
+	req *bucket_list_gen.UpdateBucketListItemRequest,
+) (
+	*bucket_list_gen.UpdateBucketListItemResponse,
+	error,
+) {
+	resp, err := blss.DatabaseServiceClient.UpdateBucketListItem(
+		ctx,
+		&database_gen.UpdateBucketListItemRequest{
+			Id:                 req.Id,
+			UserId:             req.UserId,
+			ActivityTagId:      req.ActivityTagId,
+			CountryId:          req.CountryId,
+			StateId:            req.StateId,
+			CityId:             req.CityId,
+			TimeframeStartDate: req.TimeframeStartDate,
+			TimeframeEndDate:   req.TimeframeEndDate,
+			Note:               req.Note,
+			IsPublic:           req.IsPublic,
+		},
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	return &bucket_list_gen.UpdateBucketListItemResponse{
+		BucketListItem: mapBucketListItem(resp.BucketListItem),
+	}, nil
+}

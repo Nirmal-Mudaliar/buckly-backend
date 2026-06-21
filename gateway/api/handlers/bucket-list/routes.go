@@ -41,7 +41,7 @@ func (blh *BucketListHandler) RegisterRoutes(r *gin.Engine) {
 	secured.POST("/create", blh.CreateBucketList)
 	secured.GET("/items", blh.GetBucketListItemsByUserId)
 	secured.GET("/items/:id", blh.GetBucketListItemById)
-	secured.GET("/update", blh.UpdateBucketListItem)
+	secured.PUT("/update", blh.UpdateBucketListItem)
 }
 
 // Create Bucket List godoc
@@ -250,7 +250,6 @@ func (blh *BucketListHandler) GetBucketListItemById(c *gin.Context) {
 func (blh *BucketListHandler) UpdateBucketListItem(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(c.Request.Context(), 5*time.Second)
 	defer cancel()
-
 	logger := utils.GetLoggerFromContext(ctx)
 
 	claims, err := utils.GetClaims(c)
