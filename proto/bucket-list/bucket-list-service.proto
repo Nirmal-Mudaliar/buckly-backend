@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+option go_package = "proto/bucket-list-gen";
+
+import "proto/bucket-list/dto/bucket-list-dto.proto";
+
+package bucket_list;
+
+service BucketListService {
+  rpc CreateBucketListItem(CreateBucketListItemRequest) returns (CreateBucketListItemResponse);
+}

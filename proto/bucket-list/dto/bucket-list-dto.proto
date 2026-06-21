@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+option go_package = "proto/bucket-list-gen";
+
+package bucket_list;
+
+import "google/protobuf/timestamp.proto";
+
+message BucketListItem {
+  int64 id = 1;
+  int64 user_id = 2;
+  int64 activity_tag_id = 3;
+  int64 country_id = 4;
+  int64 state_id = 5;
+  int64 city_id = 6;
+  string timeframe_start_date = 7;
+  string timeframe_end_date = 8;
+  string note = 9;
+  bool is_public = 10;
+  string status = 11;
+  google.protobuf.Timestamp insert_ts = 12;
+  google.protobuf.Timestamp modified_ts = 13;
+}
+
+message CreateBucketListItemRequest {
+  int64 user_id = 1;
+  int64 activity_tag_id = 2;
+  int64 country_id = 3;
+  int64 state_id = 4;
+  int64 city_id = 5;
+  string timeframe_start_date = 6;
+  string timeframe_end_date = 7;
+  string note = 8;
+  bool is_public = 9;
+}
+
+message CreateBucketListItemResponse {
+  BucketListItem bucket_list_item = 1;
+}

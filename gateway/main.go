@@ -15,6 +15,11 @@ import (
 	"go.uber.org/zap"
 )
 
+// @title Buckly API Docs
+// @description API Documentation
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
 func main() {
 	container := di.BuildContainer()
 

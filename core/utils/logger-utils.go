@@ -34,6 +34,10 @@ func GetLogger(isDevelopment bool) (*zap.Logger, error) {
 }
 
 func GetLoggerFromContext(ctx context.Context) *zap.Logger {
+	if logger == nil {
+		// Return a no-op logger if not initialized
+		logger, _ = zap.NewProduction()
+	}
 	return logger.With(zap.Any("context", ctx))
 }
 

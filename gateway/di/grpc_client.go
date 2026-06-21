@@ -3,6 +3,7 @@ package di
 import (
 	core_constants "buckly-ms/core/constants"
 	auth_gen "buckly-ms/proto/auth-gen"
+	bucket_list_gen "buckly-ms/proto/bucket-list-gen"
 	database_gen "buckly-ms/proto/database-gen"
 	"log"
 	"strings"
@@ -48,5 +49,27 @@ func newAuthServiceClient(authServiceAddress string) auth_gen.AuthServiceClient 
 
 	log.Println("Connected to auth service gRPC server at: ", authServiceAddress)
 	client := auth_gen.NewAuthServiceClient(conn)
+	return client
+}
+
+func newBucketListServiceClient(bucketListServiceAddress string) bucket_list_gen.BucketListServiceClient {
+	creds, err := credentials.NewClientTLSFromFile(
+		strings.Replace(core_constants.GRPC_CERT, "{service}", core_constants.BUCKET_LIST_SERVICE_NAME, -1),
+		"",
+	)
+	if err != nil {
+		log.Fatalf("Failed to get transport credentials for bucket list service gRPC server: %v", err.Error())
+	}
+
+	conn, err := grpc.NewClient(
+		bucketListServiceAddress,
+		grpc.WithTransportCredentials(creds),
+	)
+	if err != nil {
+		log.Fatalf("Failed to connect to bucket list service gRPC server: %v", err.Error())
+	}
+
+	log.Println("Connected to bucket list service gRPC server at: ", bucketListServiceAddress)
+	client := bucket_list_gen.NewBucketListServiceClient(conn)
 	return client
 }

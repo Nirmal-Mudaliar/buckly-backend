@@ -61,6 +61,22 @@ services:
       - ./certs:/certs
     networks:
       - network
+  
+  bucket-list-service:
+    container_name: bucket-list-service
+    build:
+      context: .
+      dockerfile: services/bucket-list-service/Dockerfile
+    env_file:
+      - services/bucket-list-service/.env
+    ports:
+      - "50053:50053"
+    depends_on:
+      - database-service
+    volumes:
+      - ./certs:/certs
+    networks:
+      - network
 
 networks:
   network:

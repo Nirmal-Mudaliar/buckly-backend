@@ -4,6 +4,8 @@ option go_package = "proto/database-gen";
 
 import "google/protobuf/empty.proto";
 import "proto/database/dto/users.proto";
+import "proto/database/dto/bucket_list.proto";
+
 
 package database;
 
@@ -15,4 +17,6 @@ service DatabaseService {
   rpc UpdatePhoneNoVerified(UpdatePhoneNoVerifiedRequest) returns (UpdatePhoneNoVerifiedResponse);
   rpc StoreRefreshToken(StoreRefreshTokenRequest) returns (StoreRefreshTokenResponse);
   rpc DeleteUnverifiedUserByUserId(DeleteUnverifiedUserByUserIdRequest) returns (DeleteUnverifiedUserByUserIdResponse);
+
+  rpc CreateBucketListItem(CreateBucketListItemRequest) returns (CreateBucketListItemResponse);
 }

@@ -4,7 +4,7 @@
 GATEWAYS = gateway
 
 # Define Services
-SERVICES = database-service auth-service
+SERVICES = database-service auth-service bucket-list-service
 
 # Docker image prefix
 IMAGE_PREFIX = buckly

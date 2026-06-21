@@ -7,19 +7,23 @@ import (
 )
 
 type GatewayConfig struct {
-	ServiceName            string
-	HTTPPort               string
-	Environment            string
-	DatabaseServiceAddress string
-	AuthServiceAddress     string
+	ServiceName              string
+	HTTPPort                 string
+	Environment              string
+	DatabaseServiceAddress   string
+	AuthServiceAddress       string
+	BucketListServiceAddress string
+	JWTSecret                string
 }
 
 func LoadGatewayConfig() *GatewayConfig {
 	return &GatewayConfig{
-		ServiceName:            core_utils.GetEnv(constants.SERVICE_NAME),
-		HTTPPort:               core_utils.GetEnv(constants.HTTP_PORT),
-		Environment:            core_utils.GetEnv(constants.ENVIRONMENT),
-		DatabaseServiceAddress: core_utils.GetEnv(core_constants.DATABASE_SERVICE_ADDRESS),
-		AuthServiceAddress:     core_utils.GetEnv(core_constants.AUTH_SERVICE_ADDRESS),
+		ServiceName:              core_utils.GetEnv(constants.SERVICE_NAME),
+		HTTPPort:                 core_utils.GetEnv(constants.HTTP_PORT),
+		Environment:              core_utils.GetEnv(constants.ENVIRONMENT),
+		DatabaseServiceAddress:   core_utils.GetEnv(core_constants.DATABASE_SERVICE_ADDRESS),
+		AuthServiceAddress:       core_utils.GetEnv(core_constants.AUTH_SERVICE_ADDRESS),
+		BucketListServiceAddress: core_utils.GetEnv(core_constants.BUCKET_LIST_SERVICE_ADDRESS),
+		JWTSecret:                core_utils.GetEnv(core_constants.JWT_SECRET),
 	}
 }

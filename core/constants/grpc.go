@@ -1,11 +1,12 @@
 package core_constants
 
 const (
-	GRPC_CERT     = "certs/{service}.pem"
-	GRPC_CERT_KEY = "certs/{service}-key.pem"
-	NETWORK       = "tcp"
-	GRPC_PORT     = "GRPC_PORT"
-	SERVICE_NAME  = "SERVICE_NAME"
+	GRPC_CERT       = "certs/{service}.pem"
+	GRPC_CERT_KEY   = "certs/{service}-key.pem"
+	NETWORK         = "tcp"
+	GRPC_PORT       = "GRPC_PORT"
+	SERVICE_NAME    = "SERVICE_NAME"
+	JWT_TOKEN_CLAIM = "JWT_TOKEN_CLAIM"
 )
 
 const (
@@ -16,4 +17,9 @@ const (
 const (
 	AUTH_SERVICE_NAME    = "auth-service"
 	AUTH_SERVICE_ADDRESS = "AUTH_SERVICE_ADDRESS"
+)
+
+const (
+	BUCKET_LIST_SERVICE_NAME    = "bucket-list-service"
+	BUCKET_LIST_SERVICE_ADDRESS = "BUCKET_LIST_SERVICE_ADDRESS"
 )

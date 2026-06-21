@@ -6,7 +6,6 @@ import (
 	"buckly-ms/gateway/contracts"
 	"buckly-ms/gateway/models"
 	auth_gen "buckly-ms/proto/auth-gen"
-	database_gen "buckly-ms/proto/database-gen"
 	"context"
 	"net/http"
 	"time"
@@ -15,20 +14,17 @@ import (
 )
 
 type AuthHandler struct {
-	Config                *config.GatewayConfig
-	DatabaseServiceClient database_gen.DatabaseServiceClient
-	AuthServiceClient     auth_gen.AuthServiceClient
+	Config            *config.GatewayConfig
+	AuthServiceClient auth_gen.AuthServiceClient
 }
 
 func NewAuthHandler(
 	config *config.GatewayConfig,
-	databaseServiceClient database_gen.DatabaseServiceClient,
 	authServiceClient auth_gen.AuthServiceClient,
 ) contracts.RouteRegistrar {
 	return &AuthHandler{
-		Config:                config,
-		DatabaseServiceClient: databaseServiceClient,
-		AuthServiceClient:     authServiceClient,
+		Config:            config,
+		AuthServiceClient: authServiceClient,
 	}
 }
 
