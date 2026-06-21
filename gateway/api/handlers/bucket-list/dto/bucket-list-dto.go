@@ -54,3 +54,7 @@ type UpdateBucketListItemRequest struct {
 type UpdateBucketListItemResponse struct {
 	BucketListItem BucketListItem `json:"bucket_list_item"`
 }
+
+type DeleteBucketListItemResponse struct {
+	DeletedCount int64 `json:"deleted_count"`
+}

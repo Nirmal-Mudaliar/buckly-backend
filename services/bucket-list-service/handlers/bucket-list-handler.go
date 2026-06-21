@@ -130,3 +130,27 @@ func (blss *BucketListServiceServer) UpdateBucketListItem(
 		BucketListItem: mapBucketListItem(resp.BucketListItem),
 	}, nil
 }
+
+func (blss *BucketListServiceServer) DeleteBucketListItem(
+	ctx context.Context,
+	req *bucket_list_gen.DeleteBucketListItemRequest,
+) (
+	*bucket_list_gen.DeleteBucketListItemResponse,
+	error,
+) {
+	resp, err := blss.DatabaseServiceClient.DeleteBucketListItem(
+		ctx,
+		&database_gen.DeleteBucketListItemRequest{
+			Id:     req.Id,
+			UserId: req.UserId,
+		},
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &bucket_list_gen.DeleteBucketListItemResponse{
+		DeletedCount: resp.DeletedCount,
+	}, nil
+}

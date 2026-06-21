@@ -71,3 +71,12 @@ message UpdateBucketListItemRequest {
 message UpdateBucketListItemResponse {
   BucketListItem bucket_list_item = 1;
 }
+
+message DeleteBucketListItemRequest {
+  int64 id = 1;
+  int64 user_id = 2;
+}
+
+message DeleteBucketListItemResponse {
+  int64 deleted_count = 1;
+}

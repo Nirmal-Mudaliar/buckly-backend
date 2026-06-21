@@ -42,6 +42,7 @@ func (blh *BucketListHandler) RegisterRoutes(r *gin.Engine) {
 	secured.GET("/items", blh.GetBucketListItemsByUserId)
 	secured.GET("/items/:id", blh.GetBucketListItemById)
 	secured.PUT("/update", blh.UpdateBucketListItem)
+	secured.DELETE("/items/:id", blh.DeleteBucketListItem)
 }
 
 // Create Bucket List godoc
@@ -317,6 +318,79 @@ func (blh *BucketListHandler) UpdateBucketListItem(c *gin.Context) {
 		Success: true,
 		Data: dto.UpdateBucketListItemResponse{
 			BucketListItem: bucket_list_utils.MapBucketListItem(resp.BucketListItem),
+		},
+	})
+}
+
+// DeleteBucketListItem godoc
+// @Summary Delete a bucket list item
+// @Description Delete a bucket list item belonging to the authenticated user
+// @Tags bucket-list
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id query int true "Bucket List Item ID"
+// @Success 200 {object} models.ApiResponse{data=dto.DeleteBucketListItemResponse}
+// @Router /api/v1/bucket-list/items/:id [delete]
+func (blh *BucketListHandler) DeleteBucketListItem(c *gin.Context) {
+	ctx, cancel := context.WithTimeout(c.Request.Context(), 5*time.Second)
+	defer cancel()
+
+	logger := utils.GetLoggerFromContext(ctx)
+
+	claims, err := utils.GetClaims(c)
+	if err != nil {
+		logger.Error("Invalid Claims: ", zap.Error(err))
+		c.JSON(http.StatusUnauthorized, models.ApiResponse{
+			Success: false,
+			Message: "Invalid Claims",
+		})
+		return
+	}
+
+	idQuery := c.Query("id")
+	id, err := strconv.ParseInt(idQuery, 10, 64)
+	if err != nil {
+		logger.Error("Error occured while parsing id from query params: ", zap.Error(err))
+		c.JSON(http.StatusBadRequest, models.ApiResponse{
+			Success: false,
+			Message: "Invalid Query Params",
+		})
+		return
+	}
+
+	resp, err := blh.bucketListServiceClient.DeleteBucketListItem(
+		ctx,
+		&bucket_list_gen.DeleteBucketListItemRequest{
+			Id:     id,
+			UserId: claims.UserId,
+		},
+	)
+
+	if err != nil {
+		st, ok := status.FromError(err)
+		if ok {
+			switch st.Code() {
+			case codes.NotFound:
+				c.JSON(http.StatusNotFound, models.ApiResponse{
+					Success: false,
+					Message: "Error occurred while deleting bucket list",
+				})
+				return
+			default:
+				c.JSON(http.StatusInternalServerError, models.ApiResponse{
+					Success: false,
+					Message: "Error occurred while deleting bucket list",
+				})
+				return
+			}
+		}
+	}
+
+	c.JSON(http.StatusOK, models.ApiResponse{
+		Success: true,
+		Data: dto.DeleteBucketListItemResponse{
+			DeletedCount: resp.DeletedCount,
 		},
 	})
 }

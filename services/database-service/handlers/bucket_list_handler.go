@@ -163,3 +163,35 @@ func (dss *DatabaseServiceServer) UpdateBucketListItem(
 		BucketListItem: mapBucketListItem(resp),
 	}, nil
 }
+
+func (dss *DatabaseServiceServer) DeleteBucketListItem(
+	ctx context.Context,
+	req *database_gen.DeleteBucketListItemRequest,
+) (
+	*database_gen.DeleteBucketListItemResponse,
+	error,
+) {
+	logger := core_utils.GetLoggerFromContext(ctx)
+
+	resp, err := dss.Queries.DeleteBucketListItem(
+		ctx,
+		db.DeleteBucketListItemParams{
+			ID:     req.Id,
+			UserID: req.UserId,
+		},
+	)
+
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			logger.Error("Error occurred while finding bucket list item: ", zap.Error(err))
+			return nil, status.Errorf(codes.NotFound, "Failed to find bucket list item: %v", err)
+		}
+
+		logger.Error("Error occurred while deleting bucket list item: ", zap.Error(err))
+		return nil, status.Errorf(codes.Internal, "Failed to delete bucket list item: %v", err)
+	}
+
+	return &database_gen.DeleteBucketListItemResponse{
+		DeletedCount: resp,
+	}, nil
+}

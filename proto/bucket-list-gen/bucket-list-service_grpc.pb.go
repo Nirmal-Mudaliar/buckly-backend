@@ -23,6 +23,7 @@ const (
 	BucketListService_GetBucketListItemsByUserId_FullMethodName = "/bucket_list.BucketListService/GetBucketListItemsByUserId"
 	BucketListService_GetBucketListItemById_FullMethodName      = "/bucket_list.BucketListService/GetBucketListItemById"
 	BucketListService_UpdateBucketListItem_FullMethodName       = "/bucket_list.BucketListService/UpdateBucketListItem"
+	BucketListService_DeleteBucketListItem_FullMethodName       = "/bucket_list.BucketListService/DeleteBucketListItem"
 )
 
 // BucketListServiceClient is the client API for BucketListService service.
@@ -33,6 +34,7 @@ type BucketListServiceClient interface {
 	GetBucketListItemsByUserId(ctx context.Context, in *GetBucketListItemsByUserIdRequest, opts ...grpc.CallOption) (*GetBucketListItemsByUserIdResponse, error)
 	GetBucketListItemById(ctx context.Context, in *GetBucketListItemByIdRequest, opts ...grpc.CallOption) (*GetBucketListItemByIdResponse, error)
 	UpdateBucketListItem(ctx context.Context, in *UpdateBucketListItemRequest, opts ...grpc.CallOption) (*UpdateBucketListItemResponse, error)
+	DeleteBucketListItem(ctx context.Context, in *DeleteBucketListItemRequest, opts ...grpc.CallOption) (*DeleteBucketListItemResponse, error)
 }
 
 type bucketListServiceClient struct {
@@ -83,6 +85,16 @@ func (c *bucketListServiceClient) UpdateBucketListItem(ctx context.Context, in *
 	return out, nil
 }
 
+func (c *bucketListServiceClient) DeleteBucketListItem(ctx context.Context, in *DeleteBucketListItemRequest, opts ...grpc.CallOption) (*DeleteBucketListItemResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(DeleteBucketListItemResponse)
+	err := c.cc.Invoke(ctx, BucketListService_DeleteBucketListItem_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BucketListServiceServer is the server API for BucketListService service.
 // All implementations must embed UnimplementedBucketListServiceServer
 // for forward compatibility.
@@ -91,6 +103,7 @@ type BucketListServiceServer interface {
 	GetBucketListItemsByUserId(context.Context, *GetBucketListItemsByUserIdRequest) (*GetBucketListItemsByUserIdResponse, error)
 	GetBucketListItemById(context.Context, *GetBucketListItemByIdRequest) (*GetBucketListItemByIdResponse, error)
 	UpdateBucketListItem(context.Context, *UpdateBucketListItemRequest) (*UpdateBucketListItemResponse, error)
+	DeleteBucketListItem(context.Context, *DeleteBucketListItemRequest) (*DeleteBucketListItemResponse, error)
 	mustEmbedUnimplementedBucketListServiceServer()
 }
 
@@ -112,6 +125,9 @@ func (UnimplementedBucketListServiceServer) GetBucketListItemById(context.Contex
 }
 func (UnimplementedBucketListServiceServer) UpdateBucketListItem(context.Context, *UpdateBucketListItemRequest) (*UpdateBucketListItemResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method UpdateBucketListItem not implemented")
+}
+func (UnimplementedBucketListServiceServer) DeleteBucketListItem(context.Context, *DeleteBucketListItemRequest) (*DeleteBucketListItemResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method DeleteBucketListItem not implemented")
 }
 func (UnimplementedBucketListServiceServer) mustEmbedUnimplementedBucketListServiceServer() {}
 func (UnimplementedBucketListServiceServer) testEmbeddedByValue()                           {}
@@ -206,6 +222,24 @@ func _BucketListService_UpdateBucketListItem_Handler(srv interface{}, ctx contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BucketListService_DeleteBucketListItem_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteBucketListItemRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BucketListServiceServer).DeleteBucketListItem(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BucketListService_DeleteBucketListItem_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BucketListServiceServer).DeleteBucketListItem(ctx, req.(*DeleteBucketListItemRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // BucketListService_ServiceDesc is the grpc.ServiceDesc for BucketListService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -228,6 +262,10 @@ var BucketListService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateBucketListItem",
 			Handler:    _BucketListService_UpdateBucketListItem_Handler,
+		},
+		{
+			MethodName: "DeleteBucketListItem",
+			Handler:    _BucketListService_DeleteBucketListItem_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

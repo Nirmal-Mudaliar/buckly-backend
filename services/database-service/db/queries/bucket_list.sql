@@ -54,7 +54,7 @@ WHERE id = sqlc.arg(id)
 AND user_id = sqlc.arg(user_id)
 RETURNING *;
 
--- name: DeleteBucketListItem :exec
+-- name: DeleteBucketListItem :execrows
 DELETE FROM bucket_list_items
 WHERE id = sqlc.arg(id)
 AND user_id = sqlc.arg(user_id);
